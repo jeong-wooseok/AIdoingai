@@ -88,7 +88,7 @@ langgraph_pdf_search/
 
 ## 연락처
 
-프로젝트 관리자 - [@yourgithub](https://github.com/yourgithub)
+프로젝트 관리자 - mastav7@gmail.com
 
-프로젝트 링크: [https://github.com/yourusername/langgraph-pdf-search](https://github.com/yourusername/langgraph-pdf-search)
+프로젝트 링크: [https://github.com/jeong-wooseok/AIdoingai/LangGraph3_pjt/langgraph_pdf_search]([https://github.com/jeong-wooseok/AIdoingai/LangGraph3_pjt/langgraph_pdf_search)
 이 README는 프로젝트의 목적, 설치 방법, 사용 방법, 구조, 의존성 등을 포함하고 있습니다. 프로젝트의 실제 구조와 세부 사항에 맞게 내용을 조정하시면 됩니다. 또한, 라이센스 정보와 연락처 정보는 실제 프로젝트에 맞게 업데이트해야 합니다.
