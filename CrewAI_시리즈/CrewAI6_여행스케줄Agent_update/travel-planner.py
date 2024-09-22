@@ -175,7 +175,7 @@ with st.sidebar:
             verbose=1
         )
 
-        with st.spinner('여행 계획을 생성 중입니다...'):
+        with st.spinner('여행 계획을 생성 중입니다...최초 생성에는 약5분이 소요됩니다'):
             result = crew.kickoff()
             st.session_state.travel_plan = result
             st.session_state.chat_history.append(("AI", result))
