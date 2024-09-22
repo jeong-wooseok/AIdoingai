@@ -47,6 +47,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 if (!(Test-Path -Path $PROFILE)) {
     New-Item -ItemType File -Path $PROFILE -Force
 }
+notepad $PROFILE
 ```
 
 2. 프로필에 다음 함수를 추가합니다:
