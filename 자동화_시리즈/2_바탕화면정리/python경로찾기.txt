@@ -1,0 +1,2 @@
+ # 파워쉘에서 실행하세요
+ Get-ChildItem -Path "C:\Users" -Recurse -Filter python.exe | Select-Object FullName
