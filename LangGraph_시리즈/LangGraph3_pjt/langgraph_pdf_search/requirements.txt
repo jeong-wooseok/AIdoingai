@@ -1,0 +1,13 @@
+python-dotenv
+langchain
+langchain-openai
+langgraph
+langchain-upstage
+langchain-community
+python-dotenv
+pdfplumber
+faiss-cpu
+langchainhub
+streamlit
+easy_langsmith @ file:./
+rag @ file:./

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  drama-analysis:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    env_file:
+      - .env  
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - Anthropic_API_KEY=${Anthropic_API_KEY}

@@ -1,0 +1,112 @@
+Metadata-Version: 2.1
+Name: easy_langsmith
+Version: 0.0.6
+Summary: A package for easy integration with LangSmith
+Author: wooseok
+Author-email: Your Name <your.email@example.com>
+Project-URL: Homepage, https://github.com/yourusername/easy_langsmith
+Project-URL: Bug Tracker, https://github.com/yourusername/easy_langsmith/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: numpy
+Requires-Dist: pyyaml
+Requires-Dist: ipython
+
+markdownCopy# LangGraph PDF 검색 및 웹 검색 애플리케이션
+
+이 프로젝트는 LangGraph를 사용하여 PDF 문서 검색과 웹 검색을 결합한 고급 질의응답 시스템을 구현합니다. 
+사용자의 질문에 대해 PDF 문서를 검색하고, 필요한 경우 웹 검색을 수행하여 정확하고 관련성 높은 답변을 생성합니다.
+
+## 주요 기능
+
+- PDF 문서 검색
+- 웹 검색
+- 답변의 관련성 체크
+- 질문 재작성
+- LangSmith를 통한 실행 추적
+
+## 설치 방법
+
+1. 저장소를 클론합니다:
+```powershall
+git clone https://github.com/yourusername/langgraph-pdf-search.git
+cd langgraph-pdf-search
+```
+2. 가상 환경을 생성하고 활성화합니다:
+```powershall
+python -m venv venv
+source venv/bin/activate  # Windows의 경우: venv\Scripts\activate
+```
+3. 필요한 패키지를 설치합니다:
+```powershall
+pip install -r requirements.txt
+```
+4. `.env` 파일을 생성하고 필요한 API 키를 설정합니다:
+```
+OPENAI_API_KEY=your_openai_api_key
+UPSTAGE_API_KEY=your_upstage_api_key
+TAVILY_API_KEY=your_tavily_api_key
+```
+## 사용 방법
+
+1. `main.py` 파일을 실행합니다:
+python main.py
+Copy
+2. 프롬프트에 질문을 입력합니다.
+
+3. 시스템은 PDF 문서를 검색하고, 필요한 경우 웹 검색을 수행하여 답변을 생성합니다.
+
+## 프로젝트 구조
+```
+langgraph_pdf_search/
+│
+├── main.py                # 메인 애플리케이션 파일
+├── graph_state.py         # GraphState 클래스 정의
+├── nodes.py               # 그래프의 노드 함수들
+├── edges.py               # 그래프의 엣지 함수들
+├── rag/
+│   ├── init.py
+│   ├── pdf.py             # PDF 관련 유틸리티
+│   └── utils.py           # 일반 유틸리티 함수들
+├── data/
+│   └── 632480.pdf         # 샘플 PDF 문서
+├── README.md
+└── requirements.txt
+```
+## 의존성
+
+- python-dotenv
+- langchain
+- langchain-openai
+- langgraph
+- easy-langsmith
+- langchain-upstage
+- langchain-community
+
+## 주의사항
+
+- 이 애플리케이션을 실행하기 위해서는 OpenAI API 키, Upstage API 키, Tavily API 키가 필요합니다.
+- API 사용량과 관련된 비용에 주의하세요.
+
+## 기여 방법
+
+1. 이 저장소를 포크합니다.
+2. 새 브랜치를 생성합니다 (`git checkout -b feature/AmazingFeature`).
+3. 변경 사항을 커밋합니다 (`git commit -m 'Add some AmazingFeature'`).
+4. 브랜치에 푸시합니다 (`git push origin feature/AmazingFeature`).
+5. Pull Request를 생성합니다.
+
+## 라이센스
+
+이 프로젝트는 MIT 라이센스 하에 배포됩니다. 자세한 내용은 `LICENSE` 파일을 참조하세요.
+
+## 연락처
+
+프로젝트 관리자 - [@yourgithub](https://github.com/yourgithub)
+
+프로젝트 링크: [https://github.com/yourusername/langgraph-pdf-search](https://github.com/yourusername/langgraph-pdf-search)
+이 README는 프로젝트의 목적, 설치 방법, 사용 방법, 구조, 의존성 등을 포함하고 있습니다. 프로젝트의 실제 구조와 세부 사항에 맞게 내용을 조정하시면 됩니다. 또한, 라이센스 정보와 연락처 정보는 실제 프로젝트에 맞게 업데이트해야 합니다.
