@@ -1,0 +1,465 @@
+{
+  "name": "vectordb_n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Step 2: Setup the Q&A \n",
+        "height": 733.5099670584011,
+        "width": 903.0896125323785,
+        "color": 6
+      },
+      "id": "7c6a7b77-5cce-4a5e-b151-6fb29f4ec2e6",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1560,
+        -160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "query": "={{ $json.chatInput }}",
+        "options": {
+          "systemPromptTemplate": "Use the following pieces of context to answer the users question.\nIf you don't know the answer, just say that you don't know, don't try to make up an answer.\n----------------\n{context}"
+        }
+      },
+      "id": "bd83b8b1-60d3-4032-becd-7a4c78c9b3aa",
+      "name": "Retrieval QA Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainRetrievalQa",
+      "position": [
+        1960,
+        -40
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "topK": 5
+      },
+      "id": "200887a6-e8d7-45a9-9126-a084c5b5e89f",
+      "name": "Vector Store Retriever",
+      "type": "@n8n/n8n-nodes-langchain.retrieverVectorStore",
+      "position": [
+        2020,
+        160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "c3a4ba4d-1843-4d4e-833d-d170516017ea",
+      "name": "Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        720,
+        -60
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YKzESJmx1id3t8po",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "loader": "pdfLoader",
+        "options": {}
+      },
+      "id": "36bc1a88-2786-4f9d-aeab-4fff3b0b3f4e",
+      "name": "Binary to Document",
+      "type": "@n8n/n8n-nodes-langchain.documentBinaryInputLoader",
+      "position": [
+        980,
+        200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chunkOverlap": 50,
+        "options": {
+          "splitCode": "markdown"
+        }
+      },
+      "id": "408052a5-dc99-4952-a9e4-87527d846f7d",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        960,
+        360
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Step 1: Upserting the PDF\n### Fetch file from Google Drive, split it into chunks and insert into qdrant index\n\n",
+        "height": 772,
+        "width": 992,
+        "color": 6
+      },
+      "id": "b134cef4-f9f3-40b1-84e8-bbc18a557723",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        380,
+        -200
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "crowd",
+          "mode": "list",
+          "cachedResultName": "crowd"
+        },
+        "options": {}
+      },
+      "id": "bd5950af-dd73-4b6f-a85b-5303a5b04257",
+      "name": "Qdrant Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "position": [
+        1000,
+        -20
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "qdrantApi": {
+          "id": "t2flg0kajJPBF7WY",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "qdrantCollection": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $json.body.company }}"
+        },
+        "options": {}
+      },
+      "id": "a76674ae-3adc-4bed-98c5-db311f8c8cc9",
+      "name": "Qdrant Vector Store1",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "position": [
+        1980,
+        300
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "qdrantApi": {
+          "id": "t2flg0kajJPBF7WY",
+          "name": "QdrantApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1720,
+        -40
+      ],
+      "id": "fde0b81b-d302-4a12-a26a-38c1de4d6fec",
+      "name": "When chat message received",
+      "webhookId": "538c5c47-c702-44da-af17-6d63f4b95973"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1SoLZKgoF0vEEgNKBIV_tNDvLT7jIGZOX",
+          "mode": "list",
+          "cachedResultName": "main",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1SoLZKgoF0vEEgNKBIV_tNDvLT7jIGZOX"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        500,
+        -120
+      ],
+      "id": "2322ce91-d65c-447f-92ad-b1df163bcfa2",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YKzESJmx1id3t8po",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        420
+      ],
+      "id": "2a770984-2da4-42c6-a7c4-24ea25c6a13b",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "E1f2r5HLWrfeZhZm",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        220
+      ],
+      "id": "819f54b3-731d-4c1c-9915-45001d044c86",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "E1f2r5HLWrfeZhZm",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        480,
+        120
+      ],
+      "id": "fa4e22dd-dffa-469d-8880-111850313896",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1HgZZ1pnbkTKtmzZ-eGsCEOTX8A22Ha39",
+          "mode": "list",
+          "cachedResultName": "bitcoin.pdf",
+          "cachedResultUrl": "https://drive.google.com/file/d/1HgZZ1pnbkTKtmzZ-eGsCEOTX8A22Ha39/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "id": "82c0bbfb-5ea1-4025-b459-934a31702c76",
+      "name": "선택다운로드",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        700,
+        120
+      ],
+      "typeVersion": 3,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "YKzESJmx1id3t8po",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1820,
+        140
+      ],
+      "id": "bedd83a7-bd0c-48dc-bc1c-4ed5aaa6ef88",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "E1f2r5HLWrfeZhZm",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive": {
+      "main": [
+        []
+      ]
+    },
+    "Binary to Document": {
+      "ai_document": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store1": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Vector Store Retriever",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vector Store Retriever": {
+      "ai_retriever": [
+        [
+          {
+            "node": "Retrieval QA Chain",
+            "type": "ai_retriever",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Binary to Document",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Retrieval QA Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "선택다운로드",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "선택다운로드": {
+      "main": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Retrieval QA Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b3e85e26-8a14-4fd4-bbcf-02dfeee82e0e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "wKtSpNvddamU1qHe",
+  "tags": []
+}
