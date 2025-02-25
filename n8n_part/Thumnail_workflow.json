@@ -1,0 +1,741 @@
+{
+  "name": "Thumnail_workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1KLWUbd9gai_srZdJRqoYuF1NA7Fc3y7TOlL-uXoIa8Y",
+          "mode": "id"
+        },
+        "name": "={{ $('Google Sheets Trigger1').item.json.category }}_{{ $('Google Sheets Trigger1').item.json.title }}",
+        "sameFolder": false,
+        "driveId": {
+          "__rl": true,
+          "value": "=My Drive",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1EJ-2kNnwBoqEpw6JaDnYG6N76yiQoCSG",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1000,
+        -160
+      ],
+      "id": "7276c40f-9fab-45f3-9a28-fe8c8bb11ea5",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "wbvdYhZ33U4ZSgOZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Google Sheets Trigger1').item.json.category }}",
+                    "rightValue": "퀀트",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "퀀트"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "778c8235-192f-4450-a251-8bde7c8773a8",
+                    "leftValue": "={{ $('Google Sheets Trigger1').item.json.category }}",
+                    "rightValue": "LLM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "LLM"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "20a2902b-836c-48e9-8ad8-6088b55a3e99",
+                    "leftValue": "={{ $('Google Sheets Trigger1').item.json.category }}",
+                    "rightValue": "AIE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AIE"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f95fec4f-027d-46f3-8857-7b007c3ea7e7",
+                    "leftValue": "={{ $('Google Sheets Trigger1').item.json.category }}",
+                    "rightValue": "밑바닥",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "밑바닥"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "45572466-161e-4587-91a6-559cd18e22b5",
+                    "leftValue": "={{ $('Google Sheets Trigger1').item.json.category }}",
+                    "rightValue": "=자유주제",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "자유주제"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        660,
+        -200
+      ],
+      "id": "e231caa2-c190-4dba-a681-8004fce01b26",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "replaceText",
+        "presentationId": "={{ $json.id }}",
+        "textUi": {
+          "textValues": [
+            {
+              "matchCase": true,
+              "pageObjectIds": "={{ $json.pageNumber }}",
+              "replaceText": "={{ $json.title }}",
+              "text": "{Title}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSlides",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        -160
+      ],
+      "id": "07801b86-bcfa-4d99-9ecc-0f3438f77674",
+      "name": "Google Slides",
+      "credentials": {
+        "googleSlidesOAuth2Api": {
+          "id": "E9fQLS0paG2WJa2E",
+          "name": "Google Slides account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2a551748-926f-411d-9e5c-b948ca1733b3",
+              "leftValue": "={{ $('Google Sheets Trigger1').item.json.category }}",
+              "rightValue": "={{ $('Google Sheets Trigger1').item.json.category }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        840,
+        -160
+      ],
+      "id": "7a2bc9a2-6484-461f-9436-1db473322561",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "resource": "page",
+        "operation": "getThumbnail",
+        "presentationId": "={{ $json.presentationId }}",
+        "pageObjectId": "={{ $('Code').item.json.pageNumber }}",
+        "download": true
+      },
+      "type": "n8n-nodes-base.googleSlides",
+      "typeVersion": 2,
+      "position": [
+        1540,
+        -160
+      ],
+      "id": "cab2ada0-396b-4de2-aaff-73dcd73607cb",
+      "name": "MakingThumnail",
+      "credentials": {
+        "googleSlidesOAuth2Api": {
+          "id": "E9fQLS0paG2WJa2E",
+          "name": "Google Slides account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Google Drive').item.json.name}}.png",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1VDOtYsZTTpd3uIWs8Ou_bA7UutOD4sTR",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1680,
+        -160
+      ],
+      "id": "c7c8d28b-a2e3-4975-9214-acd02fd0b7ad",
+      "name": "upload",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "wbvdYhZ33U4ZSgOZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "deleteFile",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1820,
+        -160
+      ],
+      "id": "d87d33a7-3ff9-46b0-8c28-8d4cf5883717",
+      "name": "Delete",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "wbvdYhZ33U4ZSgOZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// 각 항목에 대해 처리\nconst result = items.map(item => {\n    // 조건에 따라 pageNumber 설정\n    if (item.json.condition === \"퀀트\") {\n        item.json.pageNumber = \"p\";\n    } else if (item.json.condition === \"LLM\") {\n        item.json.pageNumber = \"g331d0aedabf_0_0\";\n    } else if (item.json.condition === \"AIE\") {\n        item.json.pageNumber = \"g331d0aedabf_0_5\";\n    } else if (item.json.condition === \"밑바닥\") {\n        item.json.pageNumber = \"g331d0aedabf_0_22\";\n    } else if (item.json.condition === \"자유주제\") {\n        item.json.pageNumber = \"g331d0aedabf_0_15\";\n    } else {\n        item.json.pageNumber = null; // 기본값 설정\n    }\n\n    // 처리된 항목 반환\n    return item;\n});\n\n// 결과 반환\nreturn result;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        -160
+      ],
+      "id": "7c094600-879f-42ca-953a-bee666a96cd4",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b90e1e83-c447-4179-9ebd-4dc20aef0fe0",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "d6709796-a243-4cac-8a6b-24545ef72023",
+              "name": "=condition",
+              "value": "={{ $('Google Sheets Trigger1').item.json.category }}",
+              "type": "string"
+            },
+            {
+              "id": "917fbd46-a489-4341-9f94-f1984c4779c6",
+              "name": "title",
+              "value": "={{ $('Google Sheets Trigger1').item.json.title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1140,
+        -160
+      ],
+      "id": "74d3d5ec-055d-479a-aea9-09bab2c9051d",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "15GPXB6elr1Q5YcZ2c-rCqQMmtIkB5tlxuEnttPE17JI",
+          "mode": "list",
+          "cachedResultName": "contents",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15GPXB6elr1Q5YcZ2c-rCqQMmtIkB5tlxuEnttPE17JI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "schedule",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15GPXB6elr1Q5YcZ2c-rCqQMmtIkB5tlxuEnttPE17JI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        40,
+        -160
+      ],
+      "id": "59cfb75b-5a73-4c50-9d42-c1a6765d88b4",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "BEH3v5Uc80yWNegv",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "1f5WTrxvGaCA3T3P_j50PdSXc3UfHeLFrxf5_tXf4TSE",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "=\n\n---\n{{ $('Google Sheets Trigger1').item.json.textbook }}-{{ $('Google Sheets Trigger1').item.json.title }}\n\nAI와 Data를 연구하는, Study Club 입니다.\n\n- 교재: {{ $('Google Sheets Trigger1').item.json.textbook }}\n        {{ $('Google Sheets Trigger1').item.json.title }}\n- 일자 : {{ $('Google Sheets Trigger1').item.json.date }}\n- 발표자 :{{ $('Google Sheets Trigger1').item.json.lecturer }}\n- 스터디 참가 희망 요청 : [이메일](restful3@gmail.com)\n- 관련코드 : {{ $('Google Sheets Trigger1').item.json.code }}\n\n{{ $json.output.hashtags[0] }}{{ $json.output.hashtags[1] }}{{ $json.output.hashtags[2] }}{{ $json.output.hashtags[3] }}{{ $json.output.hashtags[4] }}\n\n---"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        500,
+        -160
+      ],
+      "id": "51707bff-ad0a-4a82-8fb9-f517885f21ed",
+      "name": "Google Docs",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "vtDCSBwrcnCUei25",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 유튜브 본문 및 썸네일 업데이트\n- 스터디를 진행하며, 썸네일 및 본문을 자동화하기 위한 플로우 입니다.\n- 구글시트가 업데이트 되면 \n- 구글다큐먼트에는 본문이 시트를 참고하여 업데이트 됩니다.\n- 시트의 내용에 맞춰서 미리 준비된 구글슬라이드에서 썸네일을 업데이트하여 생성합니다.",
+        "height": 540,
+        "width": 1980
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -20,
+        -460
+      ],
+      "typeVersion": 1,
+      "id": "0b1fab00-63a5-443e-80d1-d8b9985ab2a9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## 본문업데이트\n- GPT로 해시테그를 붙여줍니다.",
+        "height": 340,
+        "width": 460,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        -280
+      ],
+      "typeVersion": 1,
+      "id": "08e4b5df-8050-45dd-a470-d240fd471d07",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## 주제에 따라 썸네일을 라우팅\n- 라우팅 후 필터링하여 각 주제별로 작업을 도와줍니다.",
+        "height": 340,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        480,
+        -280
+      ],
+      "typeVersion": 1,
+      "id": "dc737ebf-cc06-4a6e-b2bd-e425df3cd8c7",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 각 페이지를 찾아서 내용을 업데이트",
+        "height": 340,
+        "width": 520,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        980,
+        -280
+      ],
+      "typeVersion": 1,
+      "id": "a9f2dc5e-f898-4a2f-a3ae-9c6e0700e9dc",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## 썸네일 저장 마무리 후 슬라이드 삭제",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1520,
+        -280
+      ],
+      "typeVersion": 1,
+      "id": "9dcf4b97-44d5-4071-bc86-13b4c26a9584",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "text": "=You are a professional YouTube creator and a competent marketer. Please create 5 hashtags that can increase SEO with the corresponding {{ $json.category }}, {{ $json.textbook }} and {{ $json.title }}. make hashtag in korean",
+        "schemaType": "fromJson",
+        "jsonSchemaExample": "{\n\t\"category\": \"California\",\n\t\"hashtags\": [\"Los Angeles\", \"San Francisco\", \"San Diego\"]\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        180,
+        -160
+      ],
+      "id": "5d38e6c6-5db4-43fe-a44c-ec6f691938cf",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        160,
+        -20
+      ],
+      "id": "40520b40-4ec7-481b-afc1-cbf490efd1aa",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "AmmqJY3S3WUV9Abz",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Slides": {
+      "main": [
+        [
+          {
+            "node": "MakingThumnail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MakingThumnail": {
+      "main": [
+        [
+          {
+            "node": "upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload": {
+      "main": [
+        [
+          {
+            "node": "Delete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Google Slides",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Docs": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Google Docs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d0227432-472f-43fe-9b54-06f7544bffd1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "zEzvgDpT3F0cIo72",
+  "tags": []
+}
