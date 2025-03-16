@@ -1,0 +1,513 @@
+{
+  "name": "동영상 자동 편집 및 자막 생성",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "list",
+        "folderId": "root",
+        "options": {
+          "queryFilters": {
+            "filters": [
+              {
+                "name": "mimeType",
+                "value": "video/mp4,video/avi,video/quicktime,video/x-matroska"
+              },
+              {
+                "name": "trashed",
+                "value": false
+              }
+            ]
+          },
+          "limit": 10
+        }
+      },
+      "id": "a9e1f2a0-5c1d-4e9c-8f1a-b3e5c9a8d7f6",
+      "name": "Google Drive - 비디오 목록",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [
+        250,
+        300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "google-drive-credentials",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.processed }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "m4e3f4a2-7c3d-6e9c-0f1a-73e5c9a8d7f8",
+      "name": "이미 처리된 파일 필터링",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// 파일 정보 추출\nconst fileId = $input.item.json.id;\nconst fileName = $input.item.json.name;\nconst mimeType = $input.item.json.mimeType;\n\n// 로컬 경로 생성\nconst inputPath = `/data/${fileName}`;\nconst outputPath = `/data/edited_${fileName}`;\n\n// 결과 반환\nreturn {\n  json: {\n    fileId: fileId,\n    fileName: fileName,\n    mimeType: mimeType,\n    inputPath: inputPath,\n    outputPath: outputPath,\n    processed: false\n  }\n};"
+      },
+      "id": "h3e8f9a7-2c8d-1e1c-5f1a-23e5c9a8d7f3",
+      "name": "Prepare Paths",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        550,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "download",
+        "fileId": "={{ $json.fileId }}",
+        "options": {
+          "binaryData": false,
+          "filePath": "={{ $json.inputPath }}"
+        }
+      },
+      "id": "n4e4f5a3-8c4d-7e9c-1f1a-83e5c9a8d7f9",
+      "name": "Google Drive - 비디오 다운로드",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "google-drive-credentials",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "/usr/local/bin/auto-editor \"{{ $json.inputPath }}\" \"{{ $json.outputPath }}\"",
+        "workingDirectory": "/data",
+        "options": {
+          "timeout": 600
+        }
+      },
+      "id": "b8e2f3a1-6c2d-5e9c-9f1a-c3e5c9a8d7f7",
+      "name": "Auto Editor",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// 파일 경로 정보만 전달\nconst inputPath = $input.item.json.outputPath;\nconst fileName = $input.item.json.fileName;\nconst fileId = $input.item.json.fileId;\n\nreturn {\n  json: {\n    editedVideoPath: inputPath,\n    fileName: fileName,\n    fileId: fileId\n  }\n};"
+      },
+      "id": "i3e9f0a8-3c9d-2e2c-6f1a-33e5c9a8d7f4",
+      "name": "Prepare ASR Input",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://whisper-asr:9000/asr",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "task",
+              "value": "transcribe"
+            },
+            {
+              "name": "language",
+              "value": "ko"
+            },
+            {
+              "name": "output",
+              "value": "srt"
+            }
+          ]
+        },
+        "options": {
+          "allowUnauthorizedCerts": true,
+          "bodyContentType": "multipart-form-data",
+          "binaryData": false,
+          "timeout": 1200,
+          "formData": {
+            "audio_file": "={{ $json.editedVideoPath }}"
+          }
+        }
+      },
+      "id": "c7e3f4a2-7c3d-6e9c-0f1a-d3e5c9a8d7f8",
+      "name": "Whisper ASR",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1150,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "YOUR_GEMINI_API_KEY"
+            }
+          ]
+        },
+        "jsonParameters": true,
+        "options": {
+          "bodyContentType": "json",
+          "body": {
+            "contents": [
+              {
+                "parts": [
+                  {
+                    "text": "다음 자막을 검수하고 수정해주세요. 문법, 맞춤법, 자연스러운 표현으로 수정하되 원래 의미는 유지해주세요. SRT 형식을 유지해주세요.\n\n{{ $json.text }}"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "id": "d6e4f5a3-8c4d-7e9c-1f1a-e3e5c9a8d7f9",
+      "name": "Gemini Review",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1300,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "// 자막 텍스트 추출\nlet subtitleText = '';\n\ntry {\n  subtitleText = $input.item.json.candidates[0].content.parts[0].text;\n} catch (error) {\n  // 오류 발생 시 원본 텍스트 사용\n  subtitleText = $input.item.json.text || '';\n}\n\n// 파일 이름 정보 가져오기\nconst fileName = $input.item.json.fileName;\nconst fileId = $input.item.json.fileId;\n\nreturn {\n  json: {\n    subtitleText: subtitleText,\n    fileName: fileName,\n    fileId: fileId,\n    subtitlePath: `/data/subtitle_${fileName}.srt`,\n    editedVideoPath: `/data/edited_${fileName}`,\n    finalVideoPath: `/data/final_${fileName}`\n  }\n};"
+      },
+      "id": "j4e0f1a9-4c0d-3e3c-7f1a-43e5c9a8d7f5",
+      "name": "Prepare Subtitle",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "echo '{{ $json.subtitleText }}' > '{{ $json.subtitlePath }}'",
+        "workingDirectory": "/data",
+        "options": {
+          "timeout": 60
+        }
+      },
+      "id": "k4e1f2a0-5c1d-4e4c-8f1a-53e5c9a8d7f6",
+      "name": "Save Subtitle",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -i '{{ $json.editedVideoPath }}' -vf \"subtitles='{{ $json.subtitlePath }}':force_style='FontName=Arial,FontSize=24'\" '{{ $json.finalVideoPath }}'",
+        "workingDirectory": "/data",
+        "options": {
+          "timeout": 1200
+        }
+      },
+      "id": "f4e6f7a5-0c6d-9e9c-3f1a-03e5c9a8d7f1",
+      "name": "Subtitle Merge",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "name": "final_{{ $json.fileName }}",
+        "parents": [
+          "processed_videos"
+        ],
+        "options": {
+          "localFile": "={{ $json.finalVideoPath }}"
+        }
+      },
+      "id": "g3e7f8a6-1c7d-0e0c-4f1a-13e5c9a8d7f2",
+      "name": "Google Drive - 최종 비디오 업로드",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "google-drive-credentials",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "update",
+        "fileId": "={{ $json.fileId }}",
+        "options": {
+          "customProperties": {
+            "properties": [
+              {
+                "name": "processed",
+                "value": "true"
+              }
+            ]
+          }
+        }
+      },
+      "id": "o4e5f6a4-9c5d-8e9c-2f1a-93e5c9a8d7f0",
+      "name": "Google Drive - 원본 파일 표시 업데이트",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [
+        2050,
+        300
+      ],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "google-drive-credentials",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "rm -f '{{ $json.inputPath }}' '{{ $json.editedVideoPath }}' '{{ $json.finalVideoPath }}' '{{ $json.subtitlePath }}'",
+        "workingDirectory": "/data",
+        "options": {
+          "timeout": 60
+        }
+      },
+      "id": "p4e6f7a5-0c6d-9e9c-3f1a-03e5c9a8d7f1",
+      "name": "Clean Up Files",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        2200,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Google Drive - 비디오 목록": {
+      "main": [
+        [
+          {
+            "node": "이미 처리된 파일 필터링",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "이미 처리된 파일 필터링": {
+      "main": [
+        [
+          {
+            "node": "Prepare Paths",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Prepare Paths": {
+      "main": [
+        [
+          {
+            "node": "Google Drive - 비디오 다운로드",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive - 비디오 다운로드": {
+      "main": [
+        [
+          {
+            "node": "Auto Editor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto Editor": {
+      "main": [
+        [
+          {
+            "node": "Prepare ASR Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare ASR Input": {
+      "main": [
+        [
+          {
+            "node": "Whisper ASR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Whisper ASR": {
+      "main": [
+        [
+          {
+            "node": "Gemini Review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Review": {
+      "main": [
+        [
+          {
+            "node": "Prepare Subtitle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Subtitle": {
+      "main": [
+        [
+          {
+            "node": "Save Subtitle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Subtitle": {
+      "main": [
+        [
+          {
+            "node": "Subtitle Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Subtitle Merge": {
+      "main": [
+        [
+          {
+            "node": "Google Drive - 최종 비디오 업로드",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive - 최종 비디오 업로드": {
+      "main": [
+        [
+          {
+            "node": "Google Drive - 원본 파일 표시 업데이트",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive - 원본 파일 표시 업데이트": {
+      "main": [
+        [
+          {
+            "node": "Clean Up Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    {
+      "name": "video",
+      "createdAt": "2023-03-15T12:00:00.000Z",
+      "updatedAt": "2023-03-15T12:00:00.000Z"
+    },
+    {
+      "name": "automation",
+      "createdAt": "2023-03-15T12:00:00.000Z",
+      "updatedAt": "2023-03-15T12:00:00.000Z"
+    }
+  ],
+  "pinData": {}
+} 

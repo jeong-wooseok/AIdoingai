@@ -1,0 +1,9 @@
+FROM n8nio/n8n:latest
+
+USER root
+
+# 필요한 패키지 설치
+RUN apk add --no-cache ffmpeg
+
+USER node
+WORKDIR /data
