@@ -24,11 +24,11 @@
 
 1. 저장소를 복제하고 프로젝트 디렉토리로 이동합니다:
    ```bash
-   git clone https://github.com/yourusername/self-hosted-ai-starter-kit.git
-   cd self-hosted-ai-starter-kit
+   git clone https://github.com/jeong-wooseok/AIdoingai.git
+   cd contentskit
    ```
 
-2. `.env` 파일을 확인하고 필요한 환경 변수를 설정합니다:
+2. `sample.env` 파일을 필요한 환경 변수를 설정후 '.env'로 저장합니다:
    ```
    # MariaDB 설정
    MYSQL_ROOT_PASSWORD=안전한_비밀번호로_변경
