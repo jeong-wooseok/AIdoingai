@@ -1,1 +1,53 @@
+# WordPress 관련
+web-services/wordpress_backup/
+web-services/wordpress/wp-config.php
+web-services/wordpress/wp-content/uploads/
+web-services/wordpress/wp-content/cache/
+web-services/wordpress/wp-content/upgrade/
+web-services/wordpress/wp-content/backup-db/
+web-services/wordpress/wp-content/updraft/
+web-services/wordpress/wp-content/advanced-cache.php
+web-services/wordpress/wp-content/wp-cache-config.php
+web-services/wordpress/wp-content/debug.log
+# 워드프레스 전체 데이터 디렉토리
+web-services/wordpress/
+
+# 환경 설정 파일
+web-services/.env
+web-services/.envself
 .env
+.env.*
+!.env.example
+
+# 데이터베이스 관련
+web-services/mariadb/data/
+web-services/mariadb/dumps/
+
+# SSL 인증서 관련
+web-services/nginx/ssl/
+web-services/letsencrypt/
+
+# 로그 파일
+*.log
+web-services/nginx/logs/
+logs/
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 임시 파일
+*.swp
+*.bak
+*.tmp
+*~
+.*.swp
+
+# IDE 및 에디터 폴더
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace

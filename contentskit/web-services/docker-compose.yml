@@ -1,0 +1,61 @@
+version: '3'
+
+networks:
+  wordpress_network:
+    driver: bridge
+
+services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    environment:
+      - WORDPRESS_DB_HOST=mariadb
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - wordpress_network
+    ports:
+      - "8080:80"
+
+  mariadb:
+    image: mariadb:10.6
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${WORDPRESS_DB_NAME}
+      - MYSQL_USER=${WORDPRESS_DB_USER}
+      - MYSQL_PASSWORD=${WORDPRESS_DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./mariadb/init:/docker-entrypoint-initdb.d
+    networks:
+      - wordpress_network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - DOMAIN_WWW=${DOMAIN_WWW}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+    networks:
+      - wordpress_network
+
+volumes:
+  wordpress_data:
+  db_data: 

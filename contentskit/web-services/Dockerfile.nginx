@@ -1,0 +1,30 @@
+FROM nginx:latest
+
+# 필요한 패키지 설치
+RUN apt-get update && apt-get install -y \
+    openssl \
+    gettext-base \
+    && rm -rf /var/lib/apt/lists/*
+
+# SSL 디렉토리 생성
+RUN mkdir -p /etc/nginx/ssl
+
+# 자체 서명 인증서 생성
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/self-signed.key \
+    -out /etc/nginx/ssl/self-signed.crt \
+    -subj "/C=KR/ST=Seoul/L=Seoul/O=AIdoingAI/OU=Web/CN=aidoingai.com"
+
+# 기본 HTML 페이지 생성
+RUN echo "<html><body><h1>AIdoingAI</h1><p>환영합니다!</p></body></html>" > /usr/share/nginx/html/index.html
+
+# Nginx 시작 스크립트 복사
+COPY docker-entrypoint-nginx.sh /
+RUN chmod +x /docker-entrypoint-nginx.sh
+
+# 기본 포트 노출
+EXPOSE 80 443
+
+# 엔트리포인트 설정
+ENTRYPOINT ["/docker-entrypoint-nginx.sh"]
+CMD ["nginx", "-g", "daemon off;"] 
