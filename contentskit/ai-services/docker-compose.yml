@@ -100,6 +100,7 @@ services:
 
   n8n-import:
     <<: *service-n8n
+    image: n8nio/n8n:latest
     container_name: n8n-import
     entrypoint: /bin/sh
     command:
@@ -113,13 +114,21 @@ services:
 
   n8n:
     <<: *service-n8n
+    build:
+      context: .
+      dockerfile: Dockerfile.n8n
     container_name: n8n
     restart: unless-stopped
     ports:
       - "5678:5678"
+    environment:
+      - N8N_AUTO_EDIT=true
+      - N8N_AUTO_EDIT_TIMEOUT=15000
+      - N8N_AUTO_EDIT_MAX_CHUNK_LENGTH=10000
     volumes:
       - ../n8n/backup/n8n:/backup/
       - ../data:/data/shared
+      - ./videos:/data/videos
     depends_on:
       postgres:
         condition: service_healthy

@@ -1,9 +1,12 @@
+version: "3.8"
+
 networks:
-  demo:
+  demo: {}
 
 x-n8n: &service-n8n
   image: n8nio/n8n:latest
-  networks: ['demo']
+  networks:
+    - demo
   environment:
     - DB_TYPE=postgresdb
     - DB_POSTGRESDB_HOST=postgres
@@ -19,19 +22,21 @@ x-n8n: &service-n8n
 x-ollama: &service-ollama
   image: ollama/ollama:latest
   container_name: ollama
-  networks: ['demo']
+  networks:
+    - demo
   restart: unless-stopped
   ports:
-    - 11434:11434
+    - "11434:11434"
   volumes:
-    - /z/.cache/ollama:/root/.ollama
-    
+    - ./.cache/ollama:/root/.ollama
+
 x-init-ollama: &init-ollama
   image: ollama/ollama:latest
-  networks: ['demo']
+  networks:
+    - demo
   container_name: ollama-pull-llama
   volumes:
-    - /z/.cache/ollama:/root/.ollama
+    - ./.cache/ollama:/root/.ollama
   entrypoint: /bin/sh
   command:
     - "-c"
@@ -40,22 +45,24 @@ x-init-ollama: &init-ollama
 services:
   flowise:
     image: flowiseai/flowise
-    networks: ['demo']
+    networks:
+      - demo
     restart: unless-stopped
     container_name: flowise
     environment:
-        - PORT=3001
+      - PORT=3001
     ports:
-        - 3001:3001
+      - "3001:3001"
     extra_hosts:
-      - "host.docker.internal:host-gateway"        
+      - "host.docker.internal:host-gateway"
     volumes:
-        - ./n8n/backup/.flowise:/root/.flowise
+      - ./n8n/backup/.flowise:/root/.flowise
     entrypoint: /bin/sh -c "sleep 3; flowise start"
-    
+
   open-webui:
     image: ghcr.io/open-webui/open-webui:main
-    networks: ['demo']
+    networks:
+      - demo
     restart: unless-stopped
     container_name: open-webui
     ports:
@@ -67,7 +74,8 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    networks: ['demo']
+    networks:
+      - demo
     restart: unless-stopped
     environment:
       - POSTGRES_USER
@@ -76,7 +84,7 @@ services:
     volumes:
       - ./n8n/backup/postgresql:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      test: ["CMD-SHELL", "pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -99,7 +107,7 @@ services:
     container_name: n8n
     restart: unless-stopped
     ports:
-      - 5678:5678
+      - "5678:5678"
     volumes:
       - ./n8n/backup/n8n:/backup/
       - ./data:/data/shared
@@ -108,14 +116,15 @@ services:
         condition: service_healthy
       n8n-import:
         condition: service_completed_successfully
-        
+
   qdrant:
     image: qdrant/qdrant
     container_name: qdrant
-    networks: ['demo']
+    networks:
+      - demo
     restart: unless-stopped
     ports:
-      - 6333:6333
+      - "6333:6333"
     volumes:
       - ./n8n/backup/n8n/qdrant:/qdrant/storage
 
