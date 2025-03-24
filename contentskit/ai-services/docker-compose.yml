@@ -149,7 +149,7 @@ services:
   whisper-asr:
     build:
       context: ../whisper-asr-webservice
-      dockerfile: Dockerfile.gpu
+      dockerfile: Dockerfile
     container_name: whisper-asr
     networks:
       - ai_network

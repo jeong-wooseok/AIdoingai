@@ -1,0 +1,442 @@
+{
+  "name": "자막생성 및 검수",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1_hY6OYzPuOh321PNIEBzhomAGqWKiYof",
+          "mode": "list",
+          "cachedResultName": "mp3",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1_hY6OYzPuOh321PNIEBzhomAGqWKiYof"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "234104e7-4036-44cb-be76-c83a43729c7a",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "wbvdYhZ33U4ZSgOZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [160, 0],
+      "id": "5f44351f-3e3c-46ba-a343-8132c366b83b",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "wbvdYhZ33U4ZSgOZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:9000/asr",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "encode",
+              "value": "true"
+            },
+            {
+              "name": "task",
+              "value": "transcribe"
+            },
+            {
+              "name": "output",
+              "value": "srt"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n \"Content-Type\": \"multipart/form-data\"\n}",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "audio_file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [300, 0],
+      "id": "9844ada4-89a8-4703-a5a8-af0c6cd656cb",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "functionCode": "// SRT 파일을 파싱하여 개별 자막 항목으로 분리\nconst srtContent = $input.item.json.data;\nconst srtItems = [];\n\n// SRT 형식: 번호 + 타임코드 + 자막 텍스트 + 빈 줄\nconst regex = /(\\d+)\\s*\\n(\\d{2}:\\d{2}:\\d{2},\\d{3}) --> (\\d{2}:\\d{2}:\\d{2},\\d{3})\\s*\\n([\\s\\S]*?)(?=\\n\\s*\\n\\d+\\s*\\n|$)/g;\n\nlet match;\nwhile ((match = regex.exec(srtContent)) !== null) {\n  srtItems.push({\n    index: match[1],\n    startTime: match[2],\n    endTime: match[3],\n    text: match[4].trim(),\n    originalText: match[4].trim()\n  });\n}\n\nreturn [{ json: { srtItems } }];"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [440, 0],
+      "id": "srt-parser-node",
+      "name": "SRT Parser"
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {
+          "reset": true,
+          "continue": true
+        },
+        "sourceData": "={{ $json.srtItems }}"
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 2,
+      "position": [580, 0],
+      "id": "split-batches-node",
+      "name": "Split In Batches"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [580, 200],
+      "id": "1ed75348-3065-4a39-af2c-a2bddf567837",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "iyqyNzybpl7JffnA",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "너는 자막 교정 전문가야. 다음 지침을 따라 자막을 교정해줘:\n- 주어진 자막 텍스트의 맞춤법과 문법만 교정하고, 원래 의미와 길이를 최대한 유지해야 해\n- 문맥에 어색한 단어는 적합한 단어로 수정해\n- 화자의 이름이 언급된 경우 'AI하는 아이' 또는 '일하는 AI'로 수정해\n- 자막 길이가 너무 길면 적절히 줄바꿈을 추가해\n- 원본 텍스트의 내용을 요약하거나 생략하지 마\n- 교정된 텍스트만 반환해"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [720, 0],
+      "id": "fbda76d7-ca9d-4ef3-9471-714d322ac6ae",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('Split In Batches').context.noItemsLeft }}",
+              "operation": "equal",
+              "value2": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [860, 0],
+      "id": "if-node",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "functionCode": "// 개별 처리된 자막 항목을 다시 SRT 형식으로 병합\nconst items = $input.all().map(item => {\n  return {\n    index: item.json.index,\n    startTime: item.json.startTime,\n    endTime: item.json.endTime,\n    text: item.json.output || item.json.text\n  };\n});\n\n// 인덱스 기준으로 정렬\nitems.sort((a, b) => parseInt(a.index) - parseInt(b.index));\n\n// SRT 형식으로 변환\nlet srtContent = '';\nitems.forEach(item => {\n  srtContent += `${item.index}\\n`;\n  srtContent += `${item.startTime} --> ${item.endTime}\\n`;\n  srtContent += `${item.text}\\n\\n`;\n});\n\nreturn [{ json: { data: srtContent } }];"
+      },
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1000, -100],
+      "id": "merge-node",
+      "name": "Merge SRT"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "={{ $('Google Drive').item.json.name.split('.')[0] }}.srt"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [1140, -100],
+      "id": "aa1b765e-74d2-4b08-a0a9-e052be0a2c2d",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Google Drive').item.json.originalFilename.split('.')[0] }}.srt",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1rmpSkth0b3cKv2INCTwicn8e070T74sk",
+          "mode": "list",
+          "cachedResultName": "script",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1rmpSkth0b3cKv2INCTwicn8e070T74sk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1280, -100],
+      "id": "36b374c2-7aaf-430c-8707-89d6b955ebf1",
+      "name": "Google Upload",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "wbvdYhZ33U4ZSgOZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [1280, 100],
+      "id": "1a943b89-2cfa-4453-8b83-9a3e173283e3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "AmmqJY3S3WUV9Abz",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Merge SRT').item.json.data }}",
+        "options": {
+          "systemMessage": "너는 욕망을 자극하는 최고의 콘텐츠 마케터야\n고객의 신뢰를 중요하게 생각하며, 가치 있는 콘텐츠를 잘 만들지\n- 입력된 자막파일을 기반으로, 전반적인 내용을 파악하고 하이라이트를 뽑아\n- SEO를 고려하여 제목과 썸네일을 제안해줘 \n- SRT자막파일에서 파악한 내용을 타임스템프로 만들어 본문을 만들어\n- 관련한 해시테그를 추출하여 본문에 넣어줘\n- 적절히 이모지를 사용해도 좋아"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [1420, -100],
+      "id": "647f3ad0-1105-4367-bd40-c3d398b6c106",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "output",
+        "options": {
+          "fileName": "={{ $('Google Drive').item.json.name.split('.')[0] }}_본문.text"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [1560, -100],
+      "id": "e8e4bb90-6bf6-481b-b9c8-2409a1cb6e31",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Google Drive').item.json.originalFilename.split('.')[0] }}_본문.text",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1JWggRShPVX_N3TndAodJlobcKg7v0smK",
+          "mode": "list",
+          "cachedResultName": "body",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1JWggRShPVX_N3TndAodJlobcKg7v0smK"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1700, -100],
+      "id": "f2899f8c-16c4-4441-b211-82c9b403d07a",
+      "name": "Google Upload1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "wbvdYhZ33U4ZSgOZ",
+          "name": "Google Drive account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "SRT Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SRT Parser": {
+      "main": [
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split In Batches": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Merge SRT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Split In Batches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge SRT": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Upload": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "
