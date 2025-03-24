@@ -1,0 +1,96 @@
+# 환경 변수 및 비밀 정보
+.env
+*.env
+!.env.example
+
+# 캐시 및 임시 파일
+.cache/
+.tmp/
+*.log
+*.pid
+*.lock
+
+# 동영상 및 오디오 파일
+videos/**/*.mp4
+videos/**/*.avi
+videos/**/*.mkv
+videos/**/*.mov
+videos/**/*.wmv
+videos/**/*.flv
+videos/**/*.webm
+videos/**/*.mp3
+videos/**/*.wav
+videos/**/*.ogg
+videos/**/*.m4a
+videos/**/*.flac
+
+# 백업 파일
+n8n/backup/
+*/backup/
+
+# Ollama 모델 파일
+.cache/ollama/
+
+# Whisper 캐시
+**/whisper-cache/
+
+# Python 가상 환경 및 캐시
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.env/
+.venv/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Docker 관련
+.docker/
+docker-compose.override.yml
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE 관련 파일
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 로그 파일
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 데이터베이스 파일
+*.sqlite
+*.sqlite3
+*.db
+
+# 플로와이즈/n8n 데이터 디렉토리 (설정 파일 제외)
+.flowise/storage.json
+
+# 대용량 데이터 파일
+*.csv
+*.xls
+*.xlsx
+*.json
+# Git에 포함할 중요한 JSON 설정 파일 예외처리
+!package.json
+!package-lock.json
+!workflow/*.json
+!.flowise/config.json 

@@ -1,0 +1,112 @@
+site_name: Whisper ASR Webservice
+site_url: https://ahmetoner.github.io/whisper-asr-webservice
+site_dir: public
+
+site_description: "OpenAI Whisper ASR Webservice API"
+repo_url: "https://github.com/ahmetoner/whisper-asr-webservice"
+repo_name: "ahmetoner/whisper-asr-webservice"
+copyright: Copyright &copy; 2025
+edit_uri: edit/main/docs/
+
+validation:
+  omitted_files: warn
+  absolute_links: warn
+  unrecognized_links: warn
+
+nav:
+  - Overview: index.md
+  - Installation & Usage: run.md
+  - API Endpoints: endpoints.md
+  - Configuration: environmental-variables.md
+  - Development: build.md
+  - Changelog: changelog.md
+  - License: licence.md
+  - Releases: https://github.com/ahmetoner/whisper-asr-webservice/releases
+  - Docker Hub: https://hub.docker.com/r/onerahmet/openai-whisper-asr-webservice
+
+theme:
+  name: material
+  custom_dir: docs/.overrides
+  icon:
+    logo: material/subtitles
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tooltips
+    - navigation.footer
+    - navigation.indexes
+    # - navigation.sections # important
+    - navigation.top
+    # - navigation.tabs
+    # - navigation.tabs.sticky
+    - search.highlight
+    - search.suggest
+    - toc.follow
+    - toc.integrate
+  palette:
+    # System preference
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: lime
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+
+
+extra_css:
+  - assets/css/extra.css
+markdown_extensions:
+  - attr_list
+  - admonition
+  - footnotes
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.magiclink
+  - pymdownx.snippets:
+      check_paths: true
+      dedent_subsections: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: "¶"
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search
+
+extra:
+  generator: false 
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ahmetoner
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/onerahmet
