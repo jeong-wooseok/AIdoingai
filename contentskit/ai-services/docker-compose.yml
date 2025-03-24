@@ -146,10 +146,27 @@ services:
     volumes:
       - ../n8n/backup/n8n/qdrant:/qdrant/storage
 
-  whisper-asr:
+  whisper-asr-cpu:
+    profiles: ["cpu"]
     build:
       context: whisper-asr-webservice
       dockerfile: Dockerfile
+    container_name: whisper-asr
+    networks:
+      - ai_network
+    restart: unless-stopped
+    environment:
+      - ASR_MODEL=base
+    ports:
+      - "9000:9000"
+    volumes:
+      - whisper-cache:/root/.cache
+
+  whisper-asr-gpu:
+    profiles: ["gpu-nvidia"]
+    build:
+      context: whisper-asr-webservice
+      dockerfile: Dockerfile.gpu
     container_name: whisper-asr
     networks:
       - ai_network
@@ -168,6 +185,28 @@ services:
               count: 1
               capabilities: [gpu]
 
+  whisper-asr-metal:
+    profiles: ["gpu-metal"]
+    build:
+      context: whisper-asr-webservice
+      dockerfile: Dockerfile
+    container_name: whisper-asr
+    platform: linux/arm64
+    networks:
+      - ai_network
+    restart: unless-stopped
+    environment:
+      - ASR_MODEL=base
+      - PYTORCH_ENABLE_MPS_FALLBACK=1
+    ports:
+      - "9000:9000"
+    volumes:
+      - whisper-cache:/root/.cache
+    deploy:
+      resources:
+        reservations:
+          memory: 4G
+
   ollama-cpu:
     profiles: ["cpu"]
     <<: *service-ollama
@@ -182,6 +221,11 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+
+  ollama-metal:
+    profiles: ["gpu-metal"]
+    <<: *service-ollama
+    platform: linux/arm64
 
   ollama-pull-llama-cpu:
     profiles: ["cpu"]
