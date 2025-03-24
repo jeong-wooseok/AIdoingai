@@ -116,7 +116,7 @@ services:
     <<: *service-n8n
     build:
       context: .
-      dockerfile: Dockerfile.n8n
+      dockerfile: Dockerfile
     container_name: n8n
     restart: unless-stopped
     ports:
@@ -148,7 +148,7 @@ services:
 
   whisper-asr:
     build:
-      context: ../whisper-asr-webservice
+      context: whisper-asr-webservice
       dockerfile: Dockerfile
     container_name: whisper-asr
     networks:
