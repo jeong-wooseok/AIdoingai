@@ -1,0 +1,3 @@
+[submodule "contentskit/whisper-asr-webservice"]
+	path = contentskit/whisper-asr-webservice
+	url = https://github.com/ahmetoner/whisper-asr-webservice.git
