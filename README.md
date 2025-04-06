@@ -37,3 +37,4 @@ python -m ipykernel install --user --name=crewai
       3. n8n과 Slack 연동
       4. OpenWebUI 설명 및 N8N 로컬모델 사용 (Ollama: Deepseek R1)
       5. OpenWebUI와 N8N 연동 : WebHook
+	  6. 테스트용입니다.
