@@ -57,9 +57,14 @@ def download_video(url, save_path='.'):
             # H.264(AVC) 비디오 + AAC 오디오 우선, 없으면 차선책
             # vcodec^=avc : 비디오 코덱이 avc로 시작하는 것
             # acodec^=aac : 오디오 코덱이 aac로 시작하는 것
+            # format 옵션에서 오디오 확장자를 m4a로 지정하여 AAC 코덱 우선 유도
             "-f", "bestvideo[ext=mp4][vcodec^=avc]+bestaudio[ext=m4a][acodec^=aac]/best[ext=mp4][vcodec^=avc][acodec^=aac]/best[ext=mp4]",
             "-o", output_template,
             "--remux-video", "mp4", # 최종 컨테이너 MP4 보장
+            # --- 추가된 후처리 옵션 ---
+            # FFmpeg을 사용하여 오디오만 재인코딩
+            "--postprocessor-args", "ffmpeg_o:-c:a aac -ar 48000 -b:a 192k",
+            # ------------------------
             # "--print", "filename", # 로그 파싱으로 대체
             # "--force-overwrites", # 필요시 주석 해제
             "-v"
