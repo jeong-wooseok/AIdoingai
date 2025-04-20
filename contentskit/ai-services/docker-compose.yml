@@ -52,6 +52,39 @@ x-whisper-asr: &service-whisper-asr
     - whisper-cache:/root/.cache
 
 services:
+  traefik:
+    image: "traefik"
+    networks:
+      - ai_network
+    restart: always
+    command:
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.mytlschallenge.acme.tlschallenge=true"
+      - "--certificatesresolvers.mytlschallenge.acme.email=${SSL_EMAIL}"
+      - "--certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./local-files:/files
+      - traefik_data:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   flowise:
     image: flowiseai/flowise
     networks:
@@ -92,6 +125,8 @@ services:
       - POSTGRES_DB
     volumes:
       - ../n8n/backup/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -100,12 +135,23 @@ services:
 
   n8n-import:
     <<: *service-n8n
-    image: n8nio/n8n:latest
+    image: n8nio/n8n:1.88.0
     container_name: n8n-import
+    environment:
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_USER=${POSTGRES_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - N8N_PERSONALIZATION_ENABLED=false
+      - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - N8N_USER_MANAGEMENT_JWT_SECRET=${N8N_USER_MANAGEMENT_JWT_SECRET}
     entrypoint: /bin/sh
     command:
       - "-c"
-      - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
+      - "sleep 3 && echo 'Attempting import...' && n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
     volumes:
       - ../n8n/backup:/backup
     depends_on:
@@ -125,6 +171,22 @@ services:
       - N8N_AUTO_EDIT=true
       - N8N_AUTO_EDIT_TIMEOUT=15000
       - N8N_AUTO_EDIT_MAX_CHUNK_LENGTH=10000
+      - N8N_SECURE_COOKIE=false
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.n8n.rule=Host(`${SUBDOMAIN}.${DOMAIN_NAME}`)
+      - traefik.http.routers.n8n.tls=true
+      - traefik.http.routers.n8n.entrypoints=web,websecure
+      - traefik.http.routers.n8n.tls.certresolver=mytlschallenge
+      - traefik.http.middlewares.n8n.headers.SSLRedirect=true
+      - traefik.http.middlewares.n8n.headers.STSSeconds=315360000
+      - traefik.http.middlewares.n8n.headers.browserXSSFilter=true
+      - traefik.http.middlewares.n8n.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.n8n.headers.forceSTSHeader=true
+      - traefik.http.middlewares.n8n.headers.SSLHost=${DOMAIN_NAME}
+      - traefik.http.middlewares.n8n.headers.STSIncludeSubdomains=true
+      - traefik.http.middlewares.n8n.headers.STSPreload=true
+      - traefik.http.routers.n8n.middlewares=n8n@docker
     volumes:
       - ../n8n/backup/n8n:/backup/
       - ../data:/data/shared
@@ -134,7 +196,7 @@ services:
         condition: service_healthy
       n8n-import:
         condition: service_completed_successfully
-
+     
   qdrant:
     image: qdrant/qdrant
     container_name: qdrant
@@ -144,7 +206,7 @@ services:
     ports:
       - "6333:6333"
     volumes:
-      - ../n8n/backup/n8n/qdrant:/qdrant/storage
+      - ../n8n/backup/qdrant:/qdrant/storage
 
   whisper-asr-cpu:
     profiles: ["cpu"]
@@ -161,6 +223,8 @@ services:
       - "9000:9000"
     volumes:
       - whisper-cache:/root/.cache
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   whisper-asr-gpu:
     profiles: ["gpu-nvidia"]
@@ -241,6 +305,8 @@ services:
       - "sleep 3; OLLAMA_HOST=ollama:11434 ollama pull llama3.1"
     depends_on:
       - ollama-gpu
-
+      
 volumes:
-  whisper-cache: 
+  whisper-cache:
+  traefik_data:
+  n8n_data:

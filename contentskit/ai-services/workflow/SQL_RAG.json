@@ -1,0 +1,518 @@
+{
+  "name": "SQL RAG",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a65eb426-9de1-4217-b750-641d1e954c3d",
+      "name": "When chat message received",
+      "webhookId": "81b39410-fe7b-4076-a780-9c7b0023d526"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        280,
+        0
+      ],
+      "id": "31c30c4b-afc4-4f30-9eb6-972b4e6b257f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "name": "execute_query_tool",
+        "description": "Call this tool to executes SQL queries against PostgreSQL databases, processes the results, and returns formatted data to users with appropriate status information.",
+        "workflowId": {
+          "__rl": true,
+          "value": "hWRrjBBiXZrNcDJK",
+          "mode": "list",
+          "cachedResultName": "execute_query_tool"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        500,
+        200
+      ],
+      "id": "bbafb644-10cf-4cf5-9d6d-1656de9a7604",
+      "name": "execute_query_tool"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1ChZbZyKZL_W_5oOATzyD0D84erunkjFC",
+          "mode": "list",
+          "cachedResultName": "sql",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1ChZbZyKZL_W_5oOATzyD0D84erunkjFC"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        440
+      ],
+      "id": "1d70d455-7bbb-4e17-877d-ed6a33678cde",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "OZpt4bObevZotBgs",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8e3c97b4-243c-41f0-a6dc-f3251cc5fd3a",
+              "name": "table_url",
+              "value": "https://docs.google.com/spreadsheets/d/1XTnhfmN-8PChpLgYhYXVrL-IXPz4Zvs54fpKG7GCqtA",
+              "type": "string"
+            },
+            {
+              "id": "c3c1d60c-9071-4762-93ef-30251d69deb9",
+              "name": "sheet_name",
+              "value": "shopping_trends",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        440
+      ],
+      "id": "db90a10b-f62d-483b-9eb4-bc0549cf2ccd",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT EXISTS(\n  SELECT 1\n  FROM information_schema.TABLES\n  WHERE table_name = 'ai_table_{{ $json.sheet_name }}');\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        220,
+        440
+      ],
+      "id": "7aa95053-18d2-412f-9f39-de4b6f42443b",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "t9wsL27ihs0QwOcb",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1XTnhfmN-8PChpLgYhYXVrL-IXPz4Zvs54fpKG7GCqtA",
+          "mode": "list",
+          "cachedResultName": "shopping_trends",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XTnhfmN-8PChpLgYhYXVrL-IXPz4Zvs54fpKG7GCqtA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 412599660,
+          "mode": "list",
+          "cachedResultName": "shopping_trends",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1XTnhfmN-8PChpLgYhYXVrL-IXPz4Zvs54fpKG7GCqtA/edit#gid=412599660"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        340,
+        440
+      ],
+      "id": "db1d4c80-437b-407f-94b7-414b4d75fb98",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "4GFdtLpmEkvNYWd9",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 테이블 존재 여부를 확인하고 없을 경우에만 생성하는 코드\n// 입력 아이템에서 sheet_name을 가져옵니다. 실제 n8n 환경에 따라 접근 방식이 달라질 수 있습니다.\n// 예: const sheet_name = $input.item.json.sheet_name; 또는 $('Edit Fields').item.json.sheet_name;\n// 여기서는 첫 번째 아이템에서 가져온다고 가정합니다.\nconst items = $input.all();\n// sheet_name이 어디에서 오는지 확인 필요 - 여기서는 첫 번째 아이템의 json 데이터에서 온다고 가정\n// Edit Fields 노드의 값을 참조하는 것이 더 안정적일 수 있습니다: const sheet_name = $('Edit Fields').item.json.sheet_name;\nconst sheet_name = items[0].json.sheet_name || 'shopping_trends'; // 기본값 설정\nconst tableName = 'ai_table_' + sheet_name;\n\nfunction generateTableCreationCode(tableName) {\n  // 테이블 존재 여부 확인 쿼리 (이제 동적 테이블 이름 사용)\n  const checkTableExistsQuery = `\n    SELECT EXISTS (\n      SELECT FROM information_schema.tables \n      WHERE table_schema = 'public'\n      AND table_name = '${tableName}'\n    );\n  `;\n  \n  // 테이블 생성 쿼리 (이제 동적 테이블 이름 사용)\n  const createTableQuery = `\n  CREATE TABLE IF NOT EXISTS ${tableName} (\n    customer_id INTEGER PRIMARY KEY,\n    age INTEGER,\n    gender VARCHAR(50),\n    item_purchased VARCHAR(100),\n    category VARCHAR(50),\n    purchase_amount INTEGER,\n    location VARCHAR(100),\n    size VARCHAR(10),\n    color VARCHAR(50),\n    season VARCHAR(20),\n    review_rating DECIMAL(3,1),\n    subscription_status VARCHAR(10),\n    payment_method VARCHAR(50),\n    shipping_type VARCHAR(50),\n    discount_applied VARCHAR(10),\n    promo_code_used VARCHAR(10),\n    previous_purchases INTEGER,\n    preferred_payment_method VARCHAR(50),\n    frequency_of_purchases VARCHAR(50)\n  );\n  `;\n  \n  // 복합 쿼리 반환\n  const fullQuery = {\n    checkTableExistsQuery: checkTableExistsQuery, // 이 부분은 현재 워크플로우에서는 직접 사용되지 않음\n    createTableQuery: createTableQuery\n  };\n  \n  return fullQuery;\n}\n\n// n8n 코드 노드 반환값\nreturn generateTableCreationCode(tableName);\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        360
+      ],
+      "id": "3ccef248-6254-4dec-8937-f44610694f5c",
+      "name": "create table query"
+    },
+    {
+      "parameters": {
+        "name": "get_postgre_schema",
+        "description": "Call this tool to retrieve and know structures PostgreSQL database schema information, providing metadata about tables, columns, and relationships to help with query formulation.",
+        "workflowId": {
+          "__rl": true,
+          "value": "2FeNA9rCh9Gbyjcn",
+          "mode": "list",
+          "cachedResultName": "get_postgres_schema"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        340,
+        200
+      ],
+      "id": "159c4766-f2a6-4b50-90f1-6df750ac6d78",
+      "name": "get_postgre_schema"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "lenient",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c213b88d-3c10-469c-85f8-d2cfaf8d50b6",
+              "leftValue": "{{ $json.exists.toBoolean() }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equal",
+                "name": "filter.operator.equal"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        440
+      ],
+      "id": "8f2772f3-a526-4417-8161-93a6e90ebc4c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Helper function to escape single quotes and backslashes for SQL strings\nfunction escapeSqlString(value) {\n  if (value === null || value === undefined) {\n    return 'NULL';\n  }\n  const strValue = String(value);\n  // Escape backslashes first, then single quotes\n  return strValue.replace(/\\/g, '\\\\').replace(/'/g, \"''\");\n}\n\n// 입력 아이템에서 sheet_name을 가져옵니다. 실제 n8n 환경에 따라 접근 방식이 달라질 수 있습니다.\n// 예: const sheet_name = $input.item.json.sheet_name; 또는 $('Edit Fields').item.json.sheet_name;\n// 여기서는 첫 번째 아이템에서 가져온다고 가정합니다.\nconst items = $input.all();\n// sheet_name이 어디에서 오는지 확인 필요 - 여기서는 첫 번째 아이템의 json 데이터에서 온다고 가정\n// Edit Fields 노드의 값을 참조하는 것이 더 안정적일 수 있습니다: const sheet_name = $('Edit Fields').item.json.sheet_name;\nconst sheet_name = items[0].json.sheet_name || 'shopping_trends'; // 기본값 설정\nconst tableName = 'ai_table_' + sheet_name;\n\nlet insertQuery = `\nINSERT INTO ${tableName} \n(customer_id, age, gender, item_purchased, category, purchase_amount, location, \nsize, color, season, review_rating, subscription_status, payment_method, \nshipping_type, discount_applied, promo_code_used, previous_purchases, \npreferred_payment_method, frequency_of_purchases)\nVALUES `;\n\nconst values = items.map(item => `(\n  ${item.json['Customer ID']}, ${item.json.Age}, '${escapeSqlString(item.json.Gender)}', \n  '${escapeSqlString(item.json['Item Purchased'])}', '${escapeSqlString(item.json.Category)}', ${item.json['Purchase Amount (USD)']}, \n  '${escapeSqlString(item.json.Location)}', '${escapeSqlString(item.json.Size)}', '${escapeSqlString(item.json.Color)}', '${escapeSqlString(item.json.Season)}', \n  ${item.json['Review Rating']}, '${escapeSqlString(item.json['Subscription Status'])}', '${escapeSqlString(item.json['Payment Method'])}', \n  '${escapeSqlString(item.json['Shipping Type'])}', '${escapeSqlString(item.json['Discount Applied'])}', '${escapeSqlString(item.json['Promo Code Used'])}', \n  ${item.json['Previous Purchases']}, '${escapeSqlString(item.json['Preferred Payment Method'])}', \n  '${escapeSqlString(item.json['Frequency of Purchases'])}'\n)`).join(',\n');\n\ninsertQuery += values + ';';\n\nreturn {insertQuery};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        520
+      ],
+      "id": "4f0e4900-7ebe-4410-8e39-0b5382ec2916",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.createTableQuery }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        860,
+        360
+      ],
+      "id": "14152780-45c6-4364-8aa5-1340685b6b22",
+      "name": "CreateTable",
+      "credentials": {
+        "postgres": {
+          "id": "t9wsL27ihs0QwOcb",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.insertQuery }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1200,
+        520
+      ],
+      "id": "42417353-3cd1-40e2-9a86-1025bf5469d6",
+      "name": "InsertData",
+      "credentials": {
+        "postgres": {
+          "id": "t9wsL27ihs0QwOcb",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        200,
+        220
+      ],
+      "id": "d60ba097-3af6-4c0b-8529-a989b04d6143",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "SZRulcCKvkYATgsQ",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "execute_query_tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_postgre_schema": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create table query": {
+      "main": [
+        [
+          {
+            "node": "CreateTable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "create table query",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "InsertData",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreateTable": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ce7249eb-04c6-474a-b05b-f17e9f29a9df",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2aa5157c30cffa178165b5c0fc51272ad9509e95c552bc1acdbd0df88aa82c86"
+  },
+  "id": "5YVuiFJ87CWefoqU",
+  "tags": []
+}

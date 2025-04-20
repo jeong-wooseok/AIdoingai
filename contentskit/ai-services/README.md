@@ -5,7 +5,6 @@ ContentsKit의 AI 서비스 컴포넌트로, 동영상 편집 및 처리를 위�
 ## 주요 기능
 
 - 동영상 다운로드 (yt-dlp)
-- 자동 동영상 편집 (auto-editor)
 - 음성 인식 및 자막 생성 (Whisper ASR)
 - 워크플로우 자동화 (n8n)
 
