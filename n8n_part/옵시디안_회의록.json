@@ -1,0 +1,409 @@
+{
+  "name": "회의록",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1CZ8phyAv6EXdvqh_r4NqNZ-pqdLzLkoO",
+          "mode": "list",
+          "cachedResultName": "99.Attachment",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1CZ8phyAv6EXdvqh_r4NqNZ-pqdLzLkoO"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        0
+      ],
+      "id": "10db256e-f1fa-4fed-ab63-b0b0561209c7",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "heR8bEHpQN0bY8HM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        120,
+        0
+      ],
+      "id": "ec16987e-2155-42f9-b1ed-bd887814b191",
+      "name": "Google Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "heR8bEHpQN0bY8HM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:9000/asr",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "encode",
+              "value": "true"
+            },
+            {
+              "name": "task",
+              "value": "transcribe"
+            },
+            {
+              "name": "output",
+              "value": "srt"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "specifyHeaders": "json",
+        "jsonHeaders": "{\n  \"Content-Type\": \"multipart/form-data\"\n}",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ],
+      "id": "60b290e1-b6b8-4182-ab7d-69fc3db06b08",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro-preview-05-06",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        400,
+        180
+      ],
+      "id": "bb980e72-2a50-492c-b522-44851134c466",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "BoeBAcRyfvO0j4FE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "- 맞춤법, 흐름을 교정해줘. \n- 임의로 길이를 줄이지 말고,\n- 처음부터 끝까지 누락되는 문장이 없도록 검토해.\n- 문맥에 어색한 단어는 적합한 단어로 수정이 필요해."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        420,
+        0
+      ],
+      "id": "41502e74-1a20-4907-9dcd-c3adea031275",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Google Drive').item.json.originalFilename.split('.')[0] }}.srt",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1rmpSkth0b3cKv2INCTwicn8e070T74sk",
+          "mode": "list",
+          "cachedResultName": "script",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1rmpSkth0b3cKv2INCTwicn8e070T74sk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        820,
+        0
+      ],
+      "id": "5a721ff0-9100-4a71-927a-57d9c75ac6a7",
+      "name": "Google Upload",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "heR8bEHpQN0bY8HM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "output",
+        "options": {
+          "fileName": "={{ $('Google Drive').item.json.name.split('.')[0] }}.srt"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        700,
+        0
+      ],
+      "id": "8b78a825-9678-4899-ad78-b446797d9914",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "options": {
+          "systemMessage": "고객의 신뢰를 중시하는 가치 중심의 전문가야.\n\n1. **전반적인 회의 내용 파악 및 요약**\n    - 회의의 핵심 주제와 목적을 한 문단으로 요약해줘.\n\n2. **하이라이트 뽑기**\n    - 회의에서 가장 중요한 논의 내용, 결정사항, 인사이트를 불렛포인트로 정리해줘.\n    - 각 포인트는 명확하고 임팩트 있게 작성해줘.\n\n4. **타임스템프 본문 작성**\n    - SRT 자막의 타임코드를 활용해, 주요 내용별로 타임스템프를 붙여 본문을 만들어줘.\n    - 각 타임스템프별로 해당 시점의 핵심 내용을 간결하게 요약해줘.\n\n5. **관련 해시태그 추출**\n    - 회의 주제와 관련된 해시태그를 5~10개 선정해 본문 하단에 넣어줘.\n\n6. **전체 결과를 불렛포인트 방식으로, 한눈에 보기 쉽게 정리해줘.**"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        960,
+        0
+      ],
+      "id": "d4fb6f9d-d26d-4b24-87f2-01c81692d2a5",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "output",
+        "options": {
+          "fileName": "={{ $('Google Drive').item.json.name.split('.')[0] }}_본문.text"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1300,
+        0
+      ],
+      "id": "cfbdce9f-ec60-4d33-bf15-46542ddde705",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Google Drive').item.json.originalFilename.split('.')[0].split(' ')[1]}}_회의록.md",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1PZ_Ozut76EBqtbPxvQiz3R7yMDwSP0F8",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1440,
+        0
+      ],
+      "id": "3ab8f7eb-7d3b-4c4d-94af-17989d7c012f",
+      "name": "Google Upload1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "heR8bEHpQN0bY8HM",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "grok-3-beta",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
+      "typeVersion": 1,
+      "position": [
+        940,
+        200
+      ],
+      "id": "8a2d2fa8-3a63-4b47-88e3-3e9390ed4091",
+      "name": "xAI Grok Chat Model",
+      "credentials": {
+        "xAiApi": {
+          "id": "5wKzV6l2rl6OeCLe",
+          "name": "xAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Google Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Upload": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Google Upload1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "xAI Grok Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bbe22927-9470-406f-8a3f-6127be15048b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d5552bf1820cb7c2b39f944fe7cd9dfd2c849f6dd1cb1b0e6be3bdb591c833ed"
+  },
+  "id": "V9wXs9CPkf97CPpP",
+  "tags": []
+}
