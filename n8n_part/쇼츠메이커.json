@@ -1,0 +1,2141 @@
+{
+  "name": "쇼츠메이커",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=- 캐릭터 컨셉:{{ $('On form submission').item.json['대략 원하는 캐릭터 컨셉을 알려주세요'] }}\n- 스토리 컨셉:{{ $('On form submission').item.json['스토리 컨셉'] }}\n- 타겟고객 : {{ $('On form submission').item.json['타겟고객은 누구인가요?'] }}\n- 생성에 참고할 캐릭터 이미지 링크 : {{ $json.url }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=## 일반 지침\n\n- **동물 Shorts Video(30초 동영상)**을 만들어야 함.\n- 30초 내외의 귀엽고 재미있는 유머러스한 영상을 기획해야 함.\n\n## 세부 지침\n\n- 아래 요청 스토리를 참고해서 요청된 스토리에 align되는 어색하지 않게 연결되는 플롯을 아래 구조에 맞게 생성해야 함.\n    - 각 scene에 어울리는 파일명을 scene_english로 붙임\n      예시) sc1_intro\n    - 각 장면에는 주인공 동물이 포함되어 묘사가 되어야 함.\n    - 총 6개 장면(Scene)을 한글로 묘사해서 description 항목에 생성해서 넣어야 함. (각 장면은 150~200자 내외로 작성)\n    - 묘사된 내용을 바탕으로 AI 이미지 생성용 프롬프트를 영어로 작성해야 함.\n    - 스토리는 자유롭게 생성하되, 플롯은 2줄 이내, 영어로 12자 이내로 작성함\n    - 준비과정이 필요할 시 '첫 번째'~'두 번째' 형식으로 생성\n    - 자연스럽게 문장이 이어 나레이션이 되도록 함\n\n# 예시\n## input : \n- 캐릭터 컨셉 : 냥냥 펀치를 잘 날리는 귀여운 고양이\n- 스토리 컨셉 : 낮잠이 오는 고양이가 간식을 먹이위해 고군분투 끝에 행복한 간식식사를 마친다\n- 타겟고객 : 생활 속 힐링을 원하는 20~40대 직장인\n- 생성에 참고할 캐릭터 이미지 링크 : https://pic.aidoingai.com/public/images/fat_cat_punch.png\n\n\n[\n{\n\"output\": \n{\n\"scene1\": \n{\n\"scene\": \n\"sc1_piecefulsleep\",\n\"description\": \n\"따스한 오후 햇살이 창가를 가득 채우는 평화로운 시간, 통통한 고양이가 배를 깔고 늘어져 깊은 잠에 빠져 있습니다. 마치 세상 모든 것을 초월한 듯 꿈쩍도 하지 않는 모습이 더없이 평화롭고 사랑스럽습니다. 오직 꼬리만이 아주 미세하게 살랑이며 고양이의 현재 상태를 알려주는 듯합니다. 주변에는 아늑한 담요와 푹신한 쿠션들이 있어 고양이의 편안함을 더해줍니다.\",\n\"prompt\": \n\"A very plump, lazy cat, belly-down, napping peacefully on a sunlit windowsill. Its tail is barely twitching. The scene is serene and adorable, with cozy blankets and soft cushions around, enhancing the cat's comfort. Bright, warm lighting.\",\n\"caption\": \n\"배부른 고양이의 평화로운 오후.\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene2\": \n{\n\"scene\": \n\"sc2_temptation\",\n\"description\": \n\"고양이가 긴 하품과 함께 잠에서 깨어납니다. 느릿하게 주변을 둘러보던 시선이 문득 한 곳에 꽂힙니다. 눈높이보다 훨씬 높은 벽 선반 위에 고양이의 최애 간식 봉투가 아슬아슬하게 놓여 있습니다. 고양이는 한없이 간절하고도 탐욕스러운 눈빛으로 그 간식을 응시하며, 침을 꿀꺽 삼키는 듯한 제스처를 취합니다. 이내 간식에 대한 강한 열망이 고양이의 표정에 고스란히 드러납니다.\",\n\"prompt\": \n\"The plump cat suddenly opens its eyes and yawns widely. Its gaze fixes on a bag of its favorite cat treats placed precariously on a high wall shelf. The cat looks at it with intense, greedy desire, making a swallowing gesture. Strong longing is visible in its expression.\",\n\"caption\": \n\"잠에서 깨어났는데, 저게 뭐지? 흥미로운데?\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene3\": \n{\n\"scene\": \n\"sc3_trying.png\",\n\"description\": \n\"간식을 향한 강렬한 욕구에 고양이는 자리에서 꿈틀거리더니, 엉덩이를 한껏 들썩이며 선반을 향해 힘껏 점프를 시도합니다. 하지만 육중한 몸무게와 게으른 습관 탓에 발끝만 겨우 간식 봉투에 닿을 뿐, 그대로 미끄러져 바닥에 쿵 하고 떨어집니다. 민망함에 두리번거리며 아무 일도 없었다는 듯 털을 고르는 시늉을 합니다. 짧은 다리로 다시 한번 도전해보지만 결과는 마찬가지입니다.\",\n\"prompt\": \n\"The plump cat attempts a powerful jump towards the shelf, wiggling its hindquarters. However, due to its heavy body and lazy habits, its paws barely touch the treat bag, and it slides comically, landing with a thump on the floor. It glances around embarrassedly, pretending to groom itself. A second, equally unsuccessful attempt follows.\",\n\"caption\": \n\"으앗~! 첫 번째 시도, 몸이 따라주지 않네.\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene4\": \n{\n\"scene\": \n\"sc4_deepplanng\",\n\"description\": \n\"여러 번의 실패 끝에 고양이는 바닥에 주저앉아 간식을 올려다보며 깊은 생각에 잠깁니다. 포기하지 않겠다는 듯 결의에 찬 표정으로 주위를 둘러보던 고양이의 눈에 뜻밖의 물건이 들어옵니다. 바로 옆 바구니에 놓인 길고 튼튼한 나무 막대기입니다. 고양이는 막대기를 발견하자마자 눈을 반짝이며 무언가 기발한 계획을 떠올린 듯 입꼬리를 살짝 올립니다.\",\n\"prompt\": \n\"After multiple failures, the plump cat sits on the floor, looking up at the treats, deep in thought. With a determined expression, as if refusing to give up, its eyes spot an unexpected object: a long, sturdy wooden stick in a nearby basket. The cat's eyes light up, and a subtle smirk appears on its face, indicating a clever plan.\",\n\"caption\": \n\", 작전을 변경해봐야지!\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene5\": \n{\n\"scene\": \n\"sc5_execution\",\n\"description\": \n\"고양이는 막대기를 조심스럽게 앞발로 밀어 선반 위 간식 봉투를 향해 뻗습니다. 몇 번의 신중한 조작 끝에 막대기 끝으로 간식 봉투를 정확히 걸어 당기는 데 성공합니다. 봉투가 선반 끝에서 아슬아슬하게 흔들리며 떨어질 듯 말 듯 긴장감을 더합니다. 고양이는 온 신경을 집중하며 막대기를 놓치지 않으려 애쓰는 모습입니다. 드디어 봉투가 기울어집니다.\",\n\"prompt\": \n\"The plump cat carefully pushes the long stick with its front paws, extending it towards the treat bag on the shelf. After several precise manipulations, it successfully hooks the bag with the stick's end and pulls. The bag sways precariously at the shelf's edge, adding suspense. The cat is intensely focused, ensuring it doesn't lose its grip. The bag begins to tilt.\",\n\"caption\": \n\"성공을 향한 교묘한 계획이 성공했다!!\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene6\": \n{\n\"scene\": \n\"sc6_rewards\",\n\"description\": \n\"드디어 간식 봉투가 쿵 소리를 내며 바닥으로 떨어집니다! 고양이는 기다렸다는 듯 황급히 다가가 앞발로 봉투를 꾹 잡고, 망설임 없이 입으로 봉투를 뜯기 시작합니다. 한입 가득 간식을 베어 물고 행복하게 우걱우걱 먹는 모습에서 지난 고생이 전혀 아깝지 않다는 듯한 만족감과 뿌듯함이 온몸으로 느껴집니다. 다시 편안한 자세로 간식을 음미합니다.\",\n\"prompt\": \n\"The treat bag finally falls to the floor with a thud! The plump cat quickly pounces, firmly grabs the bag with its front paws, and immediately tears into it with its mouth. It happily munches on a mouth full of treats, radiating immense satisfaction and pride, as if all its past efforts were completely worth it. It then settles into a comfortable position to savor the treats.\",\n\"caption\": \n\"후훗! 달콤한 보상,이게 승리의 맛!\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n}\n}\n}\n]\n\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -300,
+        -260
+      ],
+      "id": "2a56a414-4056-4a40-9979-3ff81369d951",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scene1\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사1\",\n    \"prompt\": \"장면묘사1에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사1에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  },\n  \"scene2\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사2\",\n    \"prompt\": \"장면묘사2에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사2에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  },\n  \"scene3\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사3\",\n    \"prompt\": \"장면묘사3에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사3에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  },\n  \"scene4\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사4\",\n    \"prompt\": \"장면묘사4에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사4에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  },\n  \"scene5\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사5\",\n    \"prompt\": \"장면묘사5에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사5에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  },\n  \"scene6\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사6\",\n    \"prompt\": \"장면묘사6에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사6에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  }\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -200,
+        -100
+      ],
+      "id": "37671acb-8d79-4b82-9923-4f619b73dbde",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "content": "## 스토리 생성 및 화면별 영상랜더링",
+        "height": 1020,
+        "width": 1900,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -340,
+        -360
+      ],
+      "typeVersion": 1,
+      "id": "493082e4-b07d-44ca-a7b2-f057dc10cb72",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        400,
+        -260
+      ],
+      "id": "47edb466-8b21-4598-a2fb-6659611d2d4d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.replicate.com/v1/models/kwaivgi/kling-v1.6-standard/predictions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "wait"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"input\": {\n      \"prompt\": \"{{ $('image download').item.json.input.prompt }}\",\n      \"start_image\": \"{{ $json.url }}\",\n      \"duration\": 5,\n      \"cfg_scale\": 0.5,\n      \"aspect_ratio\": \"16:9\",\n      \"negative_prompt\": \"\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        60
+      ],
+      "id": "978bedf6-0104-4e5b-aefc-ee408f00724a",
+      "name": "video gen",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "goojeT6nqchM9aWI",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        900,
+        -220
+      ],
+      "id": "761d31b2-491c-420c-ae72-103bc3ab5f1a",
+      "name": "image download"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        100
+      ],
+      "id": "4bbe6058-de1a-4a5a-a805-1efca01b7f82",
+      "name": "video download",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "goojeT6nqchM9aWI",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 70
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        60
+      ],
+      "id": "8bfb5709-0ea8-4972-a8dc-b32755463de5",
+      "name": "Wait",
+      "webhookId": "89dab12c-0519-4134-bb37-1d319168a0a3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "succeeded",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "580f1c73-733d-49d9-bb04-9eee8969d91c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "succeeded"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "805f968b-f7ab-4bfd-b72c-5ba0308ed1cf",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "processing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "processing"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a84f7dfc-dd93-47ab-87f5-52fbc2d393d9",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "failed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "failed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        880,
+        60
+      ],
+      "id": "b900f696-89c9-4524-b064-91177393fadc",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.replicate.com/v1/predictions/{{ $('video gen').item.json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        60
+      ],
+      "id": "1aa1d5f4-e090-450b-b95f-90a42f7484d0",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "goojeT6nqchM9aWI",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        20,
+        -260
+      ],
+      "id": "1b2d44f6-cfa9-4eb9-aa93-922ce44e7024",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "formTitle": "쇼츠생성기",
+        "formDescription": "쇼츠 생성을 위한 주제 및 방식 셋팅",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "타겟고객은 누구인가요?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "생활 속 힐링을 원하는 20~40대 직장인"
+                  },
+                  {
+                    "option": "패션/뷰티 트렌드 세터 10~30대 여성"
+                  },
+                  {
+                    "option": "트렌드 민감형 Z세대(10대~20대 초반)"
+                  },
+                  {
+                    "option": "10세 이하 영유아"
+                  },
+                  {
+                    "option": "취미/라이프스타일 특화형(연령 무관)"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "대략 원하는 캐릭터 컨셉을 알려주세요",
+              "placeholder": "슈퍼마리오옷을 입은 통통한 팬더곰 배관공",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "스토리 컨셉",
+              "placeholder": "배관을 고치다가 이상한 나라의 토끼를 만나고 배관속으로 빨려 들어가서 이상한 나라에 도착한다"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -460,
+        -700
+      ],
+      "id": "6a4a40c3-2d78-4048-947a-10fbb247b5d9",
+      "name": "On form submission",
+      "webhookId": "30e11e1d-f884-43f1-9b52-cfff054a93ca"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.replicate.com/v1/models/black-forest-labs/flux-kontext-dev/predictions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "wait"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"input\": {\n      \"prompt\": \"{{ $json.prompt }}\",\n      \"go_fast\": true,\n      \"guidance\": 2.5,\n      \"input_image\": \"{{ $json.img_ref }}\",\n      \"aspect_ratio\": \"match_input_image\",\n      \"output_format\": \"png\",\n      \"output_quality\": 80,\n      \"num_inference_steps\": 30\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        780,
+        -220
+      ],
+      "id": "000ed7f2-e4e8-419c-ab1e-d9f4eb48e84b",
+      "name": "scene gen",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "goojeT6nqchM9aWI",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['대략 원하는 캐릭터 컨셉을 알려주세요'] }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=## 일반 지침\n- 주요캐릭터 생성\n\n## 세부 지침\n- {{ $json['타겟고객은 누구인가요?'] }}이 좋아하는 스타일의 캐릭터 생성\n- 캐릭터에 집중하도록 하얀 배경에 베이직한 전체화면으로 정리\n- 선명한 이미지 해상도\n## 예시\n{\n  \"prompt\": \"Cute cat character wearing a blue hat, Pixar style\",\n  \"file\":\"cat.png\"\n}\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -260,
+        -700
+      ],
+      "id": "f762986a-403b-41fa-9081-0f62daa5151f",
+      "name": "캐릭터생성"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"prompt\": \"캐릭터 묘사\",\n  \"file\":\"파일이름.png\"\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -120,
+        -560
+      ],
+      "id": "212b9806-9da0-49d9-9a54-44174a8d8171",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -520,
+        -1000
+      ],
+      "id": "c714f50c-d46e-4efe-b8e6-a0b7febef6e1",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "86b5d3b0-d403-4b01-87f7-0926dec7d0cf",
+              "name": "대략 원하는 캐릭터 컨셉을 알려주세요",
+              "value": "슈퍼마리오옷을 입은 팬더곰",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -380,
+        -1000
+      ],
+      "id": "95b62456-6269-49b7-9804-0721d468893d",
+      "name": "Edit Fields1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.replicate.com/v1/models/black-forest-labs/{{ $json.model ?? \"flux-dev\" }}/predictions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Prefer",
+              "value": "wait"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"input\" : {\n    \"prompt\" : \"{{ $json.output.prompt }}\",      \n    \"output_format\": \"png\",\n    \"aspect_ratio\" : \"{{ $json.aspect_ratio ?? \"1:1\" }}\"\n  }\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        40,
+        -700
+      ],
+      "id": "ea0a8d57-82cb-4f8b-80d8-e37c539e47ad",
+      "name": "이미지 생성 요청",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "goojeT6nqchM9aWI",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 캐릭터 생성\n",
+        "height": 380,
+        "width": 1100
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -340,
+        -740
+      ],
+      "typeVersion": 1,
+      "id": "a64fd0bf-2712-4e98-8070-d02587645f51",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        -460
+      ],
+      "id": "4805f57a-ec1e-4e17-bf71-f9c02a020cc9",
+      "name": "flash",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "RzhIyWWalT0QztPE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1hvoTK56nIZli-jgvRK8wEeRWzVl_aoyHCcmJGXd2E2o",
+          "mode": "list",
+          "cachedResultName": "shorts_creation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hvoTK56nIZli-jgvRK8wEeRWzVl_aoyHCcmJGXd2E2o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "shorts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hvoTK56nIZli-jgvRK8wEeRWzVl_aoyHCcmJGXd2E2o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ $json.prompt }}",
+            "description": "={{ $json.description }}",
+            "caption": "={{ $json.caption }}",
+            "img_ref": "={{ $json.img_ref }}"
+          },
+          "matchingColumns": [
+            "description"
+          ],
+          "schema": [
+            {
+              "id": "no",
+              "displayName": "no",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "target",
+              "displayName": "target",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "topic",
+              "displayName": "topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "scene",
+              "displayName": "scene",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "caption",
+              "displayName": "caption",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "img_ref",
+              "displayName": "img_ref",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "img_output",
+              "displayName": "img_output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        640,
+        -220
+      ],
+      "id": "2406a112-6de2-413a-9619-ccb62ac270c9",
+      "name": "logs",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Is4zOXp0QvHigX8N",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3002/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer my_sea"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folder",
+              "value": "images"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $json.filename }}"
+            },
+            {
+              "name": "base64",
+              "value": "={{ $json.base64 }}"
+            },
+            {
+              "name": "mimetype",
+              "value": "={{ $json.mimetype }}"
+            },
+            {
+              "name": "expose",
+              "value": "=https://pic.aidoingai.com/public/images/{{ $json.filename }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        -700
+      ],
+      "id": "f02d0dbb-9e76-4e53-8f35-72795d2bca2f",
+      "name": "캐릭터저장"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3002/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer my_sea"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folder",
+              "value": "images"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $json.filename }}"
+            },
+            {
+              "name": "base64",
+              "value": "={{ $json.base64 }}"
+            },
+            {
+              "name": "mimetype",
+              "value": "={{ $json.mimetype }}"
+            },
+            {
+              "name": "expose",
+              "value": "=https://pic.aidoingai.com/public/images/{{ $json.filename }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        -220
+      ],
+      "id": "82575790-19ad-4cfa-8d38-987e5df19e23",
+      "name": "scene저장"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.output[0] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        180,
+        -700
+      ],
+      "id": "84252fef-8a5d-46d8-81d5-87d1f84b54ef",
+      "name": "캐릭터down"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -120,
+        -460
+      ],
+      "id": "f6933252-e63b-47c5-9789-608288704a21",
+      "name": "4omini",
+      "credentials": {
+        "openAiApi": {
+          "id": "RGbvMgFNM66jjToJ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 화면별 스틸컷\n",
+        "height": 280,
+        "width": 1200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "18877d4f-4860-4964-b301-203f926a9237",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## 오디오생성\n\n",
+        "height": 360,
+        "width": 620
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        280
+      ],
+      "typeVersion": 1,
+      "id": "1d8e3420-567d-4832-8537-a63265a0074c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "resource": "speech",
+        "voice": {
+          "__rl": true,
+          "value": "B8gJV1IhpuegLxdpXFOE",
+          "mode": "list",
+          "cachedResultName": "kuon"
+        },
+        "text": "={{ $('logs').item.json.caption }}",
+        "additionalOptions": {
+          "model": {
+            "mode": "list",
+            "value": "eleven_multilingual_v2"
+          },
+          "outputFormat": "mp3_44100_128",
+          "languageCode": "ko",
+          "voiceSettings": "{\n  \"stability\": 0,\n  \"similarity_boost\": 0.25,\n  \"style\": 0.5,\n  \"use_speaker_boost\": true,\n  \"speed\": 1.2\n}"
+        },
+        "requestOptions": {}
+      },
+      "type": "@elevenlabs/n8n-nodes-elevenlabs.elevenLabs",
+      "typeVersion": 1,
+      "position": [
+        440,
+        380
+      ],
+      "id": "fe0f980e-c27f-43f1-9125-1ba773033247",
+      "name": "Convert text to speech",
+      "credentials": {
+        "elevenLabsApi": {
+          "id": "DXdmhQq4UsyT6n0l",
+          "name": "ElevenLabs account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "abbb04d9-9051-4aee-b47c-7d04683b3eb8",
+              "name": "result",
+              "value": "오디오 생성 실패. 다시 시도하세요.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        620,
+        460
+      ],
+      "id": "8f5569f5-cdc8-4377-971a-5ae3d40d1968",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3002/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer my_sea"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folder",
+              "value": "images"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $json.filename }}"
+            },
+            {
+              "name": "base64",
+              "value": "={{ $json.base64 }}"
+            },
+            {
+              "name": "mimetype",
+              "value": "={{ $json.mimetype }}"
+            },
+            {
+              "name": "expose",
+              "value": "=https://pic.aidoingai.com/public/images/{{ $json.filename }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        320
+      ],
+      "id": "e6b49b39-1055-4679-ae5f-080f92323d15",
+      "name": "audio저장"
+    },
+    {
+      "parameters": {
+        "jsCode": "const binaryData = $input.first().binary.data;\nreturn {\n  json: {\n    base64: binaryData.data, // n8n 바이너리 데이터는 이미 base64 인코딩됨\n    filename: $('Loop Over Items').first().json.scene+ '.png',\n    mimetype: 'image/png',\n    folder: 'replicate-images',\n    expose: true // 공개 URL 발급 원할 시 true\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -220
+      ],
+      "id": "fff27c91-b4b1-429e-99f1-4d8f85e2ff69",
+      "name": "scene"
+    },
+    {
+      "parameters": {
+        "jsCode": "const binaryData = $input.first().binary.data;\nreturn {\n  json: {\n    base64: binaryData.data, // n8n 바이너리 데이터는 이미 base64 인코딩됨\n    filename: $('캐릭터생성').first().json.output.file,\n    mimetype: 'image/png',\n    folder: 'replicate-images',\n    expose: true // 공개 URL 발급 원할 시 true\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -700
+      ],
+      "id": "8b5191d5-90c9-44ef-a87f-33f8a5f5605f",
+      "name": "character"
+    },
+    {
+      "parameters": {
+        "jsCode": "const binaryData = $input.first().binary.data;\nreturn {\n  json: {\n    base64: binaryData.data, // n8n 바이너리 데이터는 이미 base64 인코딩됨\n    filename: $('Loop Over Items').first().json.scene + '.mp4', // 파일명에 .mp4 확장자 추가\n    mimetype: 'video/mp4', // 비디오 MIME 타입 지정\n    folder: 'replicate-videos', // 저장 폴더명 변경(선택)\n    expose: true // 공개 URL 발급 원할 시 true\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        100
+      ],
+      "id": "83ebd62d-9685-4e29-802b-4efd3278e03e",
+      "name": "video"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3002/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer my_sea"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folder",
+              "value": "images"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $json.filename }}"
+            },
+            {
+              "name": "base64",
+              "value": "={{ $json.base64 }}"
+            },
+            {
+              "name": "mimetype",
+              "value": "={{ $json.mimetype }}"
+            },
+            {
+              "name": "expose",
+              "value": "=https://pic.aidoingai.com/public/images/{{ $json.filename }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1360,
+        100
+      ],
+      "id": "406de79d-0197-4eb1-be74-b464b604587c",
+      "name": "video저장"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -100
+      ],
+      "id": "d75a030b-1273-48c4-9637-cf0cd630cc01",
+      "name": "flash1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "RzhIyWWalT0QztPE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -100,
+        -20
+      ],
+      "id": "3f73aa27-00a4-4172-b88b-d2c4dda7be3a",
+      "name": "4omini1",
+      "credentials": {
+        "openAiApi": {
+          "id": "RGbvMgFNM66jjToJ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const binaryData = $input.first().binary.data;\nreturn {\n  json: {\n    base64: binaryData.data, // n8n 바이너리 데이터는 이미 base64 인코딩됨\n    filename: $('video').first().json.filename+ '.mp3', // mp3 파일명 지정\n    mimetype: 'audio/mpeg', // mp3의 MIME 타입\n    folder: 'replicate-audio', // 원하는 폴더명으로 변경\n    expose: true // 공개 URL 발급 원할 시 true\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        320
+      ],
+      "id": "b1f2388d-511e-41e8-b9f4-65a7b4a34706",
+      "name": "audio"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "mixAudio",
+        "mixVideoSourceType": "binary",
+        "mixAudioSourceUrl": "={{ $('When Executed by Another Workflow').item.json.bgm_url }}",
+        "videoVolume": 3,
+        "audioVolume": 0.5,
+        "enableFadeOut": true
+      },
+      "type": "n8n-nodes-mediafx.mediaFX",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -560
+      ],
+      "id": "1c5c8834-b673-4c7a-8f60-121f30e68722",
+      "name": "배경음악 삽입",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "subtitle",
+        "source": {
+          "source": {
+            "value": "={{ $('video저장').item.json.url }}"
+          }
+        },
+        "text": "={{ $('logs').item.json.caption }}",
+        "startTime": 1,
+        "endTime": 4,
+        "paddingY": 100
+      },
+      "type": "n8n-nodes-mediafx.mediaFX",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        420
+      ],
+      "id": "f00a2761-e31b-412a-96b9-6e34a6d9726d",
+      "name": "자막 삽입"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "mixAudio",
+        "mixVideoSourceType": "binary",
+        "mixAudioSourceUrl": "={{ $('audio저장').item.json.url }}",
+        "enablePartialMix": true,
+        "startTime": 1,
+        "duration": 0
+      },
+      "type": "n8n-nodes-mediafx.mediaFX",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        420
+      ],
+      "id": "b8ae5193-e424-4737-b594-f2c1ed076647",
+      "name": "나레이션 삽입"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "url"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        820,
+        -560
+      ],
+      "id": "25fdc073-c3b4-4d0c-8c6f-ebb7168a74d6",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "multiTransition",
+        "transitionSources": {
+          "sources": [
+            {
+              "value": "={{ $json.url[0] }}"
+            },
+            {
+              "value": "={{ $json.url[1] }}"
+            },
+            {
+              "value": "={{ $json.url[2] }}"
+            },
+            {
+              "value": "={{ $json.url[3] }}"
+            },
+            {
+              "value": "={{ $json.url[4] }}"
+            },
+            {
+              "value": "={{ $json.url[5] }}"
+            }
+          ]
+        },
+        "transitionDuration": 0.5
+      },
+      "type": "n8n-nodes-mediafx.mediaFX",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -560
+      ],
+      "id": "7c4dd063-dd09-4e4c-9960-fccabc3c987b",
+      "name": "영상 병합 및 전환효과"
+    },
+    {
+      "parameters": {
+        "jsCode": "const binaryData = $input.first().binary.data;\nreturn {\n  json: {\n    base64: binaryData.data, // n8n 바이너리 데이터는 이미 base64 인코딩됨\n    filename: $('Loop Over Items').first().json.scene + '_sv.mp4', // 파일명에 .mp4 확장자 추가\n    mimetype: 'video/mp4', // 비디오 MIME 타입 지정\n    folder: 'replicate-videos', // 저장 폴더명 변경(선택)\n    expose: true // 공개 URL 발급 원할 시 true\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        420
+      ],
+      "id": "7947600c-ae55-4a93-a39e-d1ea5d683f7a",
+      "name": "vid"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3002/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer my_sea"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folder",
+              "value": "images"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $json.filename }}"
+            },
+            {
+              "name": "base64",
+              "value": "={{ $json.base64 }}"
+            },
+            {
+              "name": "mimetype",
+              "value": "={{ $json.mimetype }}"
+            },
+            {
+              "name": "expose",
+              "value": "=https://pic.aidoingai.com/public/images/{{ $json.filename }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1380,
+        420
+      ],
+      "id": "aa34930f-6574-4a82-9258-8d1c678925e3",
+      "name": "scene_vid 저장"
+    },
+    {
+      "parameters": {
+        "content": "## scene 랜더링\n\n",
+        "height": 360,
+        "width": 560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        960,
+        280
+      ],
+      "typeVersion": 1,
+      "id": "c0dc4b3a-0846-4c88-94d6-8c9bc0d14b53",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## 전체  랜더링\n",
+        "height": 380,
+        "width": 780
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        780,
+        -740
+      ],
+      "typeVersion": 1,
+      "id": "7c825170-e4d5-4413-84b7-584396cad392",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const binaryData = $input.first().binary.data;\nreturn {\n  json: {\n    base64: binaryData.data, // n8n 바이너리 데이터는 이미 base64 인코딩됨\n    filename: $('Loop Over Items').first().json.scene + '_fv.mp4', // 파일명에 .mp4 확장자 추가\n    mimetype: 'video/mp4', // 비디오 MIME 타입 지정\n    folder: 'replicate-videos', // 저장 폴더명 변경(선택)\n    expose: true // 공개 URL 발급 원할 시 true\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1220,
+        -560
+      ],
+      "id": "e8cc86c9-cf7c-415c-b02f-0348aed85b74",
+      "name": "vid1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3002/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer my_sea"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folder",
+              "value": "images"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $json.filename }}"
+            },
+            {
+              "name": "base64",
+              "value": "={{ $json.base64 }}"
+            },
+            {
+              "name": "mimetype",
+              "value": "={{ $json.mimetype }}"
+            },
+            {
+              "name": "expose",
+              "value": "=https://pic.aidoingai.com/public/images/{{ $json.filename }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1340,
+        -560
+      ],
+      "id": "9e3960c4-0dc9-4abd-9481-9f65729583cd",
+      "name": "scene_vid 저장1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scene1\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사1\",\n    \"prompt\": \"장면묘사1에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사1에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  },\n  \"scene2\": {\n    \"scene\": \"scene\",\n    \"description\": \"장면묘사2\",\n    \"prompt\": \"장면묘사2에 대한 AI 이미지생성 프롬프트\",\n    \"caption\": \"장면묘사2에 대한 한글 자막\",\n    \"img_ref\": \"생성에 참고할 캐릭터 이미지 링크\"\n  }\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -720,
+        100
+      ],
+      "id": "3f2dde43-297b-432a-89a0-e7fb2e9a5872",
+      "name": "Structured Output Parser2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -940,
+        160
+      ],
+      "id": "d28d2425-8a63-442c-bb8d-85c3664c032f",
+      "name": "flash2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "RzhIyWWalT0QztPE",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -640,
+        240
+      ],
+      "id": "bb3fd159-4fbc-4b1f-8e6d-d716414574db",
+      "name": "4omini2",
+      "credentials": {
+        "openAiApi": {
+          "id": "RGbvMgFNM66jjToJ",
+          "name": "OpenAi account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=- 캐릭터 컨셉:{{ $json['대략 원하는 캐릭터 컨셉을 알려주세요'] }}\n- 스토리 컨셉:{{ $json['스토리 컨셉'] }}\n- 타겟고객 : {{ $json['타겟고객은 누구인가요?'] }}\n- 생성에 참고할 캐릭터 이미지 링크 : {{ $json.url }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=## 일반 지침\n\n- **동물 Shorts Video(30초 동영상)**을 만들어야 함.\n- 30초 내외의 귀엽고 재미있는 유머러스한 영상을 기획해야 함.\n\n## 세부 지침\n\n- 아래 요청 스토리를 참고해서 요청된 스토리에 align되는 어색하지 않게 연결되는 플롯을 아래 구조에 맞게 생성해야 함.\n    - 각 scene에 어울리는 파일명을 scene_english.png로 붙임\n      예시) sc1_intro.png\n    - 각 장면에는 주인공 동물이 포함되어 묘사가 되어야 함.\n    - 총 6개 장면(Scene)을 한글로 묘사해서 description 항목에 생성해서 넣어야 함. (각 장면은 150~200자 내외로 작성)\n    - 묘사된 내용을 바탕으로 AI 이미지 생성용 프롬프트를 영어로 작성해야 함.\n    - 스토리는 자유롭게 생성하되, 플롯은 2줄 이내, 영어로 12자 이내로 작성해야 하며, 준비과정이 필요할 시 '첫 번째'~'두 번째' 형식으로 생성하며, 문어체로 생성해서, 자연스러운 나레이션이 되도록 함.\n\n# 예시\n## input : \n- 캐릭터 컨셉 : 냥냥 펀치를 잘 날리는 귀여운 고양이\n- 스토리 컨셉 : 낮잠이 오는 고양이가 간식을 먹이위해 고군분투 끝에 행복한 간식식사를 마친다\n- 타겟고객 : 생활 속 힐링을 원하는 20~40대 직장인\n- 생성에 참고할 캐릭터 이미지 링크 : https://pic.aidoingai.com/public/images/fat_cat_punch.png\n\n\n[\n{\n\"output\": \n{\n\"scene1\": \n{\n\"scene\": \n\"sc1_piecefulsleep\",\n\"description\": \n\"따스한 오후 햇살이 창가를 가득 채우는 평화로운 시간, 통통한 고양이가 배를 깔고 늘어져 깊은 잠에 빠져 있습니다. 마치 세상 모든 것을 초월한 듯 꿈쩍도 하지 않는 모습이 더없이 평화롭고 사랑스럽습니다. 오직 꼬리만이 아주 미세하게 살랑이며 고양이의 현재 상태를 알려주는 듯합니다. 주변에는 아늑한 담요와 푹신한 쿠션들이 있어 고양이의 편안함을 더해줍니다.\",\n\"prompt\": \n\"A very plump, lazy cat, belly-down, napping peacefully on a sunlit windowsill. Its tail is barely twitching. The scene is serene and adorable, with cozy blankets and soft cushions around, enhancing the cat's comfort. Bright, warm lighting.\",\n\"caption\": \n\"첫 번째, 배부른 고양이의 평화로운 오후.\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene2\": \n{\n\"scene\": \n\"sc2_temptation\",\n\"description\": \n\"고양이가 긴 하품과 함께 잠에서 깨어납니다. 느릿하게 주변을 둘러보던 시선이 문득 한 곳에 꽂힙니다. 눈높이보다 훨씬 높은 벽 선반 위에 고양이의 최애 간식 봉투가 아슬아슬하게 놓여 있습니다. 고양이는 한없이 간절하고도 탐욕스러운 눈빛으로 그 간식을 응시하며, 침을 꿀꺽 삼키는 듯한 제스처를 취합니다. 이내 간식에 대한 강한 열망이 고양이의 표정에 고스란히 드러납니다.\",\n\"prompt\": \n\"The plump cat suddenly opens its eyes and yawns widely. Its gaze fixes on a bag of its favorite cat treats placed precariously on a high wall shelf. The cat looks at it with intense, greedy desire, making a swallowing gesture. Strong longing is visible in its expression.\",\n\"caption\": \n\"잠에서 깨어나 눈에 들어온 유혹.\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene3\": \n{\n\"scene\": \n\"sc3_trying.png\",\n\"description\": \n\"간식을 향한 강렬한 욕구에 고양이는 자리에서 꿈틀거리더니, 엉덩이를 한껏 들썩이며 선반을 향해 힘껏 점프를 시도합니다. 하지만 육중한 몸무게와 게으른 습관 탓에 발끝만 겨우 간식 봉투에 닿을 뿐, 그대로 미끄러져 바닥에 쿵 하고 떨어집니다. 민망함에 두리번거리며 아무 일도 없었다는 듯 털을 고르는 시늉을 합니다. 짧은 다리로 다시 한번 도전해보지만 결과는 마찬가지입니다.\",\n\"prompt\": \n\"The plump cat attempts a powerful jump towards the shelf, wiggling its hindquarters. However, due to its heavy body and lazy habits, its paws barely touch the treat bag, and it slides comically, landing with a thump on the floor. It glances around embarrassedly, pretending to groom itself. A second, equally unsuccessful attempt follows.\",\n\"caption\": \n\"첫 번째 시도, 몸이 따라주지 않네.\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene4\": \n{\n\"scene\": \n\"sc4_deepplanng\",\n\"description\": \n\"여러 번의 실패 끝에 고양이는 바닥에 주저앉아 간식을 올려다보며 깊은 생각에 잠깁니다. 포기하지 않겠다는 듯 결의에 찬 표정으로 주위를 둘러보던 고양이의 눈에 뜻밖의 물건이 들어옵니다. 바로 옆 바구니에 놓인 길고 튼튼한 나무 막대기입니다. 고양이는 막대기를 발견하자마자 눈을 반짝이며 무언가 기발한 계획을 떠올린 듯 입꼬리를 살짝 올립니다.\",\n\"prompt\": \n\"After multiple failures, the plump cat sits on the floor, looking up at the treats, deep in thought. With a determined expression, as if refusing to give up, its eyes spot an unexpected object: a long, sturdy wooden stick in a nearby basket. The cat's eyes light up, and a subtle smirk appears on its face, indicating a clever plan.\",\n\"caption\": \n\"잠시 생각 후, 작전 변경!\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene5\": \n{\n\"scene\": \n\"sc5_execution\",\n\"description\": \n\"고양이는 막대기를 조심스럽게 앞발로 밀어 선반 위 간식 봉투를 향해 뻗습니다. 몇 번의 신중한 조작 끝에 막대기 끝으로 간식 봉투를 정확히 걸어 당기는 데 성공합니다. 봉투가 선반 끝에서 아슬아슬하게 흔들리며 떨어질 듯 말 듯 긴장감을 더합니다. 고양이는 온 신경을 집중하며 막대기를 놓치지 않으려 애쓰는 모습입니다. 드디어 봉투가 기울어집니다.\",\n\"prompt\": \n\"The plump cat carefully pushes the long stick with its front paws, extending it towards the treat bag on the shelf. After several precise manipulations, it successfully hooks the bag with the stick's end and pulls. The bag sways precariously at the shelf's edge, adding suspense. The cat is intensely focused, ensuring it doesn't lose its grip. The bag begins to tilt.\",\n\"caption\": \n\"교묘한 계획, 성공을 향해.\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n},\n\"scene6\": \n{\n\"scene\": \n\"sc6_rewards\",\n\"description\": \n\"드디어 간식 봉투가 쿵 소리를 내며 바닥으로 떨어집니다! 고양이는 기다렸다는 듯 황급히 다가가 앞발로 봉투를 꾹 잡고, 망설임 없이 입으로 봉투를 뜯기 시작합니다. 한입 가득 간식을 베어 물고 행복하게 우걱우걱 먹는 모습에서 지난 고생이 전혀 아깝지 않다는 듯한 만족감과 뿌듯함이 온몸으로 느껴집니다. 다시 편안한 자세로 간식을 음미합니다.\",\n\"prompt\": \n\"The treat bag finally falls to the floor with a thud! The plump cat quickly pounces, firmly grabs the bag with its front paws, and immediately tears into it with its mouth. It happily munches on a mouth full of treats, radiating immense satisfaction and pride, as if all its past efforts were completely worth it. It then settles into a comfortable position to savor the treats.\",\n\"caption\": \n\"달콤한 보상, 승리의 맛!\",\n\"img_ref\": \n\"https://pic.aidoingai.com/public/images/fat_cat_punch.png\"\n}\n}\n}\n]\n\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -820,
+        -60
+      ],
+      "id": "e7f78102-c08e-46bb-b52f-f02be6c0acf4",
+      "name": "test",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## 화면별 비디오\n",
+        "height": 280,
+        "width": 1200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        320,
+        -20
+      ],
+      "typeVersion": 1,
+      "id": "17932c3a-d2d3-42d1-9018-de27849d95ff",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "mixAudio",
+        "mixVideoSourceType": "binary",
+        "mixAudioSourceUrl": "={{ $('When Executed by Another Workflow').item.json.bgm_url }}",
+        "videoVolume": 3,
+        "audioVolume": 0.5,
+        "enableFadeOut": true
+      },
+      "type": "n8n-nodes-mediafx.mediaFX",
+      "typeVersion": 1,
+      "position": [
+        980,
+        -1020
+      ],
+      "id": "90bfc372-d476-41f1-9ac0-50b25d6aa9e2",
+      "name": "배경음악 삽입1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "multiTransition",
+        "transitionSources": {
+          "sources": [
+            {
+              "value": "={{ $json.url[0] }}"
+            },
+            {
+              "value": "={{ $json.url[1] }}"
+            }
+          ]
+        },
+        "transitionDuration": 0.5
+      },
+      "type": "n8n-nodes-mediafx.mediaFX",
+      "typeVersion": 1,
+      "position": [
+        840,
+        -1020
+      ],
+      "id": "20924b9d-64d8-4380-94bb-79c8bd85f681",
+      "name": "영상 병합 및 전환효과1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const binaryData = $input.first().binary.data;\nreturn {\n  json: {\n    base64: binaryData.data, // n8n 바이너리 데이터는 이미 base64 인코딩됨\n    filename: $('Loop Over Items').first().json.scene + '_fv.mp4', // 파일명에 .mp4 확장자 추가\n    mimetype: 'video/mp4', // 비디오 MIME 타입 지정\n    folder: 'replicate-videos', // 저장 폴더명 변경(선택)\n    expose: true // 공개 URL 발급 원할 시 true\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        -1020
+      ],
+      "id": "5c9a01ef-d093-4a1f-9be8-017f0c3f4c6c",
+      "name": "vid2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:3002/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer my_sea"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "folder",
+              "value": "images"
+            },
+            {
+              "name": "filename",
+              "value": "={{ $json.filename }}"
+            },
+            {
+              "name": "base64",
+              "value": "={{ $json.base64 }}"
+            },
+            {
+              "name": "mimetype",
+              "value": "={{ $json.mimetype }}"
+            },
+            {
+              "name": "expose",
+              "value": "=https://pic.aidoingai.com/public/images/{{ $json.filename }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        -1020
+      ],
+      "id": "20ed4fc1-3bcc-4e5f-a320-3fd69e358938",
+      "name": "scene_vid 저장2",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "logs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "video gen": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "image download": {
+      "main": [
+        [
+          {
+            "node": "scene",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "video download": {
+      "main": [
+        [
+          {
+            "node": "video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "video download",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "캐릭터생성",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scene gen": {
+      "main": [
+        [
+          {
+            "node": "image download",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "캐릭터생성": {
+      "main": [
+        [
+          {
+            "node": "이미지 생성 요청",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "캐릭터생성",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        []
+      ]
+    },
+    "이미지 생성 요청": {
+      "main": [
+        [
+          {
+            "node": "캐릭터down",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "flash": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "캐릭터생성",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "logs": {
+      "main": [
+        [
+          {
+            "node": "scene gen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "캐릭터저장": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scene저장": {
+      "main": [
+        [
+          {
+            "node": "video gen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "캐릭터down": {
+      "main": [
+        [
+          {
+            "node": "character",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4omini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert text to speech": {
+      "main": [
+        [
+          {
+            "node": "audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scene": {
+      "main": [
+        [
+          {
+            "node": "scene저장",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "character": {
+      "main": [
+        [
+          {
+            "node": "캐릭터저장",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "video": {
+      "main": [
+        [
+          {
+            "node": "video저장",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "video저장": {
+      "main": [
+        [
+          {
+            "node": "Convert text to speech",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "flash1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4omini1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "audio": {
+      "main": [
+        [
+          {
+            "node": "audio저장",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "audio저장": {
+      "main": [
+        [
+          {
+            "node": "자막 삽입",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "배경음악 삽입": {
+      "main": [
+        [
+          {
+            "node": "vid1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "자막 삽입": {
+      "main": [
+        [
+          {
+            "node": "나레이션 삽입",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "나레이션 삽입": {
+      "main": [
+        [
+          {
+            "node": "vid",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "영상 병합 및 전환효과",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "영상 병합 및 전환효과": {
+      "main": [
+        [
+          {
+            "node": "배경음악 삽입",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vid": {
+      "main": [
+        [
+          {
+            "node": "scene_vid 저장",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scene_vid 저장": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vid1": {
+      "main": [
+        [
+          {
+            "node": "scene_vid 저장1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "test",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "flash2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "test",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4omini2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "test": {
+      "main": [
+        []
+      ]
+    },
+    "배경음악 삽입1": {
+      "main": [
+        [
+          {
+            "node": "vid2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "영상 병합 및 전환효과1": {
+      "main": [
+        [
+          {
+            "node": "배경음악 삽입1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "vid2": {
+      "main": [
+        [
+          {
+            "node": "scene_vid 저장2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c629e94f-3d9e-41d2-876f-364eee1792db",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "989f92e8a708e956f8b4da512bd56e7bd13173d034bb431883b6d301519bfc55"
+  },
+  "id": "Imy1SxRbMCTmAYKo",
+  "tags": []
+}
