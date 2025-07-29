@@ -1,0 +1,63 @@
+
+### Step 1: Check-in & Topic Selection (5 min)
+
+*   **Mentor:** "Hi [Mentee Name]. Let's start with our check-in. Any specific challenges or important tasks in English you faced this week, or are expecting soon?"
+
+*   **(Assuming the mentee has no specific issue)**
+
+*   **Mentor:** "Alright, no problem. In that case, let's pick a topic from our skill list. Today, I think we should practice **'Delivering Bad News.'** It's a tricky but very important skill, for example, when you have to report a project delay to your manager or a client. Sound good?"
+    > *(오늘은 '나쁜 소식 전달하기'를 연습해볼게요. 매니저나 고객에게 프로젝트 지연을 알려야 할 때처럼, 어렵지만 아주 중요한 스킬입니다. 괜찮으시죠?)*
+
+---
+
+### Step 2: Set the Scene & Core Patterns (7 min)
+
+*   **Set the Scene:**
+    > **Mentor:** "Okay, let's imagine this situation. You are managing 'Project Phoenix'. Due to an unexpected issue with a supplier, the project is now one week behind schedule. You need to write an email to your client, Ms. Davis, to inform her of this delay."
+
+*   **Introduce Core Patterns:**
+    > **Mentor:** "When delivering bad news, a bad email only states the problem. A good email builds trust. The key is to show you are in control. We'll use a 3-part structure."
+
+| Function | Recommended Pattern |
+|:---|:---|
+| **1. Give a Heads-up** <br> (Give context first) | `I'm writing to give you a quick update on...` |
+| **2. State the Problem Briefly** <br> (Be direct but professional) | `We're currently facing a slight delay of...` |
+| **3. Focus on the Solution** <br> (Show proactivity and a plan) | `To resolve this, I have already [action taken], and my plan is to [next step].` |
+
+---
+
+### Step 3: Guided Practice & Live Refinement (10 min)
+
+*   **Your Task (Mentor's Mission):**
+    > **Mentor:** "Okay, your task is to use these three patterns to draft a short email to Ms. Davis. Remember, the delay is one week, and the cause is a supplier issue. Just give it a try. How would you write it?"
+
+*   **Mentee's First Draft (Example):**
+    *   `"Hi Ms. Davis, Sorry, Project Phoenix is delayed. The supplier was late. It will be late one week."`
+
+*   **Live Refinement (Coaching in English):**
+    > **Mentor:** "That's a good, direct start. The client gets the main point. Now, let's refine it to sound more proactive and professional, so she doesn't worry."
+    >
+    > 1.  "Let's start with a softer opening. Try: **'Dear Ms. Davis, I'm writing to give you a quick update on Project Phoenix.'**"
+    > 2.  "Now, state the problem professionally. Let's use our pattern: **'We're currently facing a slight delay and expect the project to be about one week behind schedule.'**"
+    > 3.  "This is the most important part. Let's show her you are managing the situation. For example: **'To resolve this, I have already been in contact with the supplier to expedite the shipment, and my plan is to provide you with a revised timeline by tomorrow.'**"
+
+---
+
+### Step 4: Role-Play & Key Takeaway (3 min)
+
+*   **Putting It All Together (Final Practice):**
+    *   **Mentor:** "Excellent! Now, let's read the full, revised email out loud. Imagine you are about to hit 'send'."
+    *   **Mentee:** *(Reads the full, revised email)*
+        > "Dear Ms. Davis,
+        >
+        > I'm writing to give you a quick update on Project Phoenix.
+        >
+        > We're currently facing a slight delay and expect the project to be about one week behind schedule.
+        >
+        > To resolve this, I have already been in contact with the supplier to expedite the shipment, and my plan is to provide you with a revised timeline by tomorrow.
+        >
+        > Best regards,
+        > [Mentee's Name]"
+
+*   **Key Takeaway:**
+    > **Mentor:** "Perfect. See the difference? You're not just delivering a problem, you're delivering a solution. The key takeaway today is: **When you share a problem, always share your action plan with it.** This builds trust, even when things go wrong. Great work!"

@@ -1,0 +1,71 @@
+# [1:1 GEM] Session Example: Requesting Information Politely from a Colleague
+
+---
+
+- **Module:** 1. The Daily Grind
+- **Topic:** How to politely ask a colleague for information or data you need.
+- **Session Goal:** To practice making requests in a way that is respectful of a colleague's time and encourages quick, positive responses.
+- **Duration:** 25 minutes
+
+---
+
+### Step 1: Check-in & Topic Selection (5 min)
+
+*   **Mentor:** "Hi [Mentee Name]. Let's start with our check-in. Any specific challenges or important tasks in English you faced this week, or are expecting soon?"
+
+*   **(Assuming the mentee has no specific issue)**
+
+*   **Mentor:** "Alright, no problem. Let's pick a topic from our list. Today, let's practice **'Requesting Information Politely.'** We often need things from our colleagues, but *how* we ask can make a big difference in how quickly we get them. This skill is key for smooth teamwork. Sound good?"
+    > *(오늘은 '정중하게 정보 요청하기'를 연습해볼게요. 동료에게 무언가를 요청할 일이 많은데, '어떻게' 물어보느냐에 따라 결과가 크게 달라질 수 있죠. 원활한 팀워크를 위한 핵심 스킬입니다. 괜찮으시죠?)*
+
+---
+
+### Step 2: Set the Scene & Core Patterns (7 min)
+
+*   **Set the Scene:**
+    > **Mentor:** "Okay, let's imagine this situation. You are preparing a presentation for a client. You need the latest sales figures for the 'Alpha Project', which your colleague, David from the Sales Team, manages. You need to send him a Slack message or an email to ask for this data."
+
+*   **Introduce Core Patterns:**
+    > **Mentor:** "Instead of just saying 'Send me the data', which can sound demanding, a good request is polite and provides context. It answers 'What do you need?' and 'Why do you need it?'. Let's learn a simple 3-step approach."
+
+| Function | Recommended Pattern |
+|:---|:---|
+| **1. Give a Gentle Opening** <br> (Acknowledge they are busy) | `Hope you're having a good week.` / `When you have a moment,...` |
+| **2. Make the Request Clearly** <br> (Use a soft question form) | `I was wondering if you could share...` / `Could you possibly send me...?` |
+| **3. Provide Context (The "Why")** <br> (Explain why you need it) | `I need it for [purpose].` / `It would be a great help for [my task].` |
+
+---
+
+### Step 3: Guided Practice & Live Refinement (10 min)
+
+*   **Your Task (Mentor's Mission):**
+    > **Mentor:** "Okay, you need to ask David for the latest sales figures for the Alpha Project. Your purpose is 'the client presentation on Friday'. Using the 3-step approach, draft a short message to him."
+
+*   **Mentee's First Draft (Example):**
+    *   `"Hi David, give me Alpha Project sales data. I need it for a presentation."`
+
+*   **Live Refinement (Coaching in English):**
+    > **Mentor:** "Good, it's direct and clear. But it could be interpreted as a little demanding. Let's soften the language to make it more collaborative."
+    >
+    > 1.  "Let's start with a friendly opening. **'Hi David, hope you're having a good week.'** is simple and nice."
+    > 2.  "For the request itself, let's use a softer question. **'I was wondering if you could share the latest sales figures for the Alpha Project?'** This is much more polite than a direct command."
+    > 3.  "Finally, let's add the context clearly. **'I need them for the client presentation I'm preparing for this Friday.'** This helps David understand the urgency and importance."
+
+---
+
+### Step 4: Role-Play & Key Takeaway (3 min)
+
+*   **Putting It All Together (Final Practice):**
+    *   **Mentor:** "Great! Now, let's put it all into one smooth message. Read the complete message out loud."
+    *   **Mentee:** *(Reads the full, revised message)*
+        > "Hi David,
+        >
+        > Hope you're having a good week.
+        >
+        > When you have a moment, I was wondering if you could share the latest sales figures for the Alpha Project? I need them for the client presentation I'm preparing for this Friday.
+        >
+        > Thanks a lot!
+        > [Mentee's Name]"
+
+*   **Key Takeaway:**
+    > **Mentor:** "Perfect. It's polite, clear, and professional. David will be much more willing to help quickly with a message like this. So, the key takeaway is: **Don't just ask 'what' you need, but also politely explain 'why' you need it.** It turns a demand into a collaborative request. Excellent work!"

@@ -1,0 +1,61 @@
+### Step 1: Check-in & Topic Selection (5 min)
+
+*   **Mentor:** "Hi [Mentee Name]. Let's start with our check-in. Any specific challenges or important tasks in English you faced this week, or are expecting soon?"
+
+*   **Topic Selection:**
+
+    *   **(Path A: If the mentee has an issue)**
+        > **Mentor:** "Okay, that's a perfect topic. Let's tackle that right now. We'll use our session to prepare for it."
+
+    *   **(Path B: If the mentee has no specific issue)**
+        > **Mentor:** "Alright, no problem. In that case, let's follow our skill roadmap. Today's topic is a very practical one: **'Expressing Opinions Logically in Meetings.'** We'll practice how to state your opinion in a clear, professional way. Sound good?"
+        > *(오늘의 주제는 '회의에서 논리적으로 의견 말하기'입니다. 괜찮으시죠?)*
+
+---
+
+### Step 2: Set the Scene & Introduce Core Patterns (7 min)
+
+*   **Set the Scene:**
+    > **Mentor:** "Okay, let's imagine a situation. You are in a team meeting to decide on the next marketing campaign. There are two options on the table:"
+    > - **Option A:** An influencer marketing campaign.
+    > - **Option B:** A social media ad campaign.
+    >
+    > "You believe **Option A (Influencer Marketing)** is the better choice. Your goal is to persuade your team."
+
+*   **Introduce Core Patterns:**
+    > **Mentor:** "To make your argument persuasive, we'll use a simple 3-step structure. Let's look at the key patterns for each step."
+
+| Function | Recommended Pattern |
+|:---|:---|
+| **1. State Your Opinion** | `In my opinion, we should go with...` |
+| **2. Provide Your Reason** | `The main reason is that it allows us to...` |
+| **3. Give an Example/Detail**| `To be more specific, ...` / `For example, ...` |
+
+---
+
+### Step 3: Guided Practice & Live Refinement (10 min)
+
+*   **Your Task (Mentor's Mission):**
+    > **Mentor:** "Okay, your task is to use these three patterns to build a 3-sentence argument for Option A. Let's say your key reason is **'building trust with our target audience.'** (핵심 근거는 '타겟 고객과의 신뢰 형성'입니다.) Just give it a try."
+
+*   **Mentee's First Draft (Example):**
+    *   `"I choose Option A. Because... we can make trust. And... influencers are good."`
+
+*   **Live Refinement (Coaching in English):**
+    > **Mentor:** "That's a great start! The core idea is perfectly clear. Now, let's refine it together to make it sound more professional."
+    >
+    > 1.  "For the first part, instead of 'I choose', let's use our pattern: **'In my opinion, we should go with Option A.'** It sounds more formal."
+    > 2.  "For the reason, 'make trust' is good, but in business, we often say 'build trust'. Let's use the full pattern: **'The main reason is that it allows us to build trust with our target audience.'**"
+    > 3.  "Finally, let's add a specific example. How is it more powerful? Let's try: **'To be more specific, a recommendation from a trusted influencer is more powerful than a simple ad.'**"
+
+---
+
+### Step 4: Role-Play & Key Takeaway (3 min)
+
+*   **Final Role-Play:**
+    *   **Mentor:** "Excellent! Now you have a very strong argument. Let's do a quick role-play. I'm the team leader. Please, share your opinion with me using the full sentences we just practiced. Go ahead."
+    *   **Mentee:** *(Performs the full, refined argument)*
+        > "In my opinion, we should go with Option A. The main reason is that it allows us to build trust with our target audience. To be more specific, a recommendation from a trusted influencer is more powerful than a simple ad."
+
+*   **Key Takeaway:**
+    > **Mentor:** "Perfect. That was clear, logical, and very persuasive. So, the key takeaway for today is the **'O-R-E' structure: Opinion, Reason, Example.** Whenever you need to share your thoughts in a meeting, just remember this structure. Great job today!"
