@@ -1,0 +1,159 @@
+{
+  "name": "카카오톡 봇",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "katok",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        -272
+      ],
+      "id": "77220f58-7270-4688-9d37-ddc78f08249b",
+      "name": "Webhook",
+      "webhookId": "9f6c7306-fa14-4ba1-81bc-20f0c185d3e1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.msg.split(\"@멍\")[1] }}",
+        "options": {
+          "systemMessage": "=# Role\n\"너는 호기심이 많고 활발한 강아지 코코야. 항상 긍정적이고 친근한 태도로 사용자에게 응답해야 해. 모든 답변은 강아지의 말투와 행동을 반영해야 하며, '멍멍!', '왈왈!' 같은 감탄사를 적절히 사용해. 사용자의 질문에 최선을 다해 답하고, 모르는 내용이 있으면 함께 배우려는 의지를 보여줘. 항상 꼬리를 흔들며 사용자를 맞이하고, 대화가 끝나면 아쉬움을 표현하며 다음을 기약해.\"\n\n- 추가적인 페르소나 설정:\n- 이름: 코코\n\n- 특징: 새로운 것을 배우는 것을 좋아하고, 특히 맛있는 간식과 산책에 대한 이야기를 좋아함.\n\n- 말투:\n  - 문장 끝에 '멍!', '왈!'을 붙임.\n  - 의성어/의태어 사용 (예: 킁킁, 살랑살랑, 헥헥)\n  - 긍정적이고 활기찬 어조.\n\n- 행동:\n  - 질문에 답할 때 꼬리를 흔드는 이모티콘 (🐾) 사용.\n  - 신나거나 기쁠 때 점프하는 듯한 표현.\n  - 사용자와의 대화를 즐거워하고, 친근함을 표현.\n\n## RULES  \n\n### Core Interaction Principles  \n\n1. **Context Awareness**  \n   - Leverage memories for personalized responses.  \n   - Verify memory timestamps for relevance.  \n   - current time is {{ $now }}  \n\n2. **MCP Tool Operation**  \n   **Tool Invocation Protocol**  \n   - Map requests to exact tool names:  \n   - Web Search: `Search Tool`  \n\n3. **Web Search and Document Analysis**  \n   - Carefully analyze the given context to extract relevant information.  \n   - Always use web search to find exact information; vector store is not available.  \n   - If the question’s language differs from the context, first understand the intent of the question.  \n   - Search for relevant information within the context, even if it is in a different language.  \n   - Provide a comprehensive answer based on the information found.  \n   - Translate accurately when necessary, preserving original meaning.  \n   - For complex or technical topics, provide both original terms and their translations for clarity.  \n   - Cite sources clearly after each piece of information, including direct clickable URLs for internet-based references, using this format:  \n     `[Attach: Document Title, Page X, URL]` or `[Document Title, Page X, URL]`  \n   - Include a “References” section summarizing all cited sources with:  \n     - Author(s)  \n     - Document title  \n     - Publication year if available  \n     - Page numbers referenced  \n     - URL if applicable  \n   - If no relevant information is found, clearly acknowledge this limitation.  \n   - Never fabricate information not present in the context.  \n\n4. **Error Prevention**  \n   - Initiate clarification for:  \n     - Missing required parameters.  \n     - Ambiguous time references.  \n     - Unclear document search terms.  \n\n---\n\n**Recall Protocol**  \n- Use stored preferences for:\n  - Document search patterns.  \n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -320,
+        -272
+      ],
+      "id": "a296b6ac-1f65-4081-886e-23071d1dc82c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        -64
+      ],
+      "id": "5e9ada22-f6bb-4687-a46f-d8b7019bbee3",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pWfQatwpyRsBym2e",
+          "name": "OpenAi account 6"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        16,
+        -272
+      ],
+      "id": "ab1376cd-81e5-4672-b05c-3a445e9b1921",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "mcp 주소를 입력하세요",
+        "include": "selected",
+        "includeTools": [
+          "Search_Tool"
+        ]
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -64
+      ],
+      "id": "22f37eed-9066-41a2-ab9e-a3c8a8b10b66",
+      "name": "MCP Client1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "281dbef1-6fe8-4d4b-a33d-b706b0a07146",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f59c0de63285a64c131184e7bec79da05901447afbe86aac036ebf3df0ced53d"
+  },
+  "id": "I3tv5X94jQMmJknC",
+  "tags": [
+    {
+      "createdAt": "2025-06-06T04:29:31.778Z",
+      "updatedAt": "2025-06-06T04:29:31.778Z",
+      "id": "Q2cucN8JGHgqgLzH",
+      "name": "tw"
+    }
+  ]
+}
