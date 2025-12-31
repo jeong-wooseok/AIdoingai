@@ -29,7 +29,43 @@ if (!content || content.trim().length === 0) {
     return;
 }
 
-// 2. 프롬프트 정의
+// 2. 파일명에서 날짜 추출 함수
+function extractDateFromFilename(filename) {
+    // yyyymmdd 패턴 찾기 (예: 20241231, 241231_노트.md)
+    const yyyymmddMatch = filename.match(/(\d{8})/);
+    if (yyyymmddMatch) {
+        const dateStr = yyyymmddMatch[1];
+        const year = dateStr.substring(0, 4);
+        const month = dateStr.substring(4, 6);
+        const day = dateStr.substring(6, 8);
+        return `${year}-${month}-${day}`;
+    }
+
+    // yymmdd 패턴 찾기 (예: 241231, 241231_노트.md)
+    const yymmddMatch = filename.match(/(\d{6})/);
+    if (yymmddMatch) {
+        const dateStr = yymmddMatch[1];
+        const yy = dateStr.substring(0, 2);
+        const month = dateStr.substring(2, 4);
+        const day = dateStr.substring(4, 6);
+        // 20xx 또는 19xx로 변환 (00-49는 20xx, 50-99는 19xx)
+        const year = parseInt(yy) < 50 ? `20${yy}` : `19${yy}`;
+        return `${year}-${month}-${day}`;
+    }
+
+    // 날짜를 찾지 못하면 오늘 날짜 반환
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+// 현재 파일명에서 날짜 추출
+const fileName = tp.file.title;
+const extractedDate = extractDateFromFilename(fileName);
+
+// 3. 프롬프트 정의
 const systemPrompt = `당신은 옵시디안 노트의 속성값(metadata) 생성 전문가입니다. 제공된 텍스트를 분석하여 가장 적절한 속성값을 추천해주세요.
 
 [지침]
@@ -39,14 +75,14 @@ const systemPrompt = `당신은 옵시디안 노트의 속성값(metadata) 생�
   * 기술 용어와 일반 용어를 적절히 섞어주세요
 
 - **status**: 콘텐츠의 상태를 하나만 선택하세요.
-  * "🟩 완료" - 완성된 정보, 최종 결과물
-  * "🟧 예정" - 처리해야 할 정보, 계획 중인 내용
-  * "🟦 진행중" - 현재 작업 중인 내용
-  * "🟥 보류" - 임시 중단된 내용
+  * "완료" - 완성된 정보, 최종 결과물
+  * "예정" - 처리해야 할 정보, 계획 중인 내용
+  * "진행중" - 현재 작업 중인 내용
+  * "보류" - 임시 중단된 내용
 
 - **source**: 소스 URL이 텍스트에 포함되어 있다면 추출하고, 없다면 빈 문자열로 남겨주세요.
 
-- **created**: 오늘 날짜를 YYYY-MM-DD 형식으로 제공하세요.
+- **created**: 다음 날짜를 사용하세요: ${extractedDate}
 
 - **Rating**: 1-5 사이의 숫자로 콘텐츠의 유용성을 평가하세요. 평가가 어렵다면 빈 문자열로 남겨주세요.
 
@@ -67,7 +103,7 @@ Rating: 숫자 또는 빈 문자열
 new Notice(`속성값 생성 중... (${MODEL_NAME})`);
 
 try {
-    // 3. OpenAI API 호출
+    // 4. OpenAI API 호출
     const response = await requestUrl({
         url: "https://api.openai.com/v1/chat/completions",
         method: "POST",
@@ -85,7 +121,7 @@ try {
         })
     });
 
-    // 4. 응답 처리 및 삽입
+    // 5. 응답 처리 및 삽입
     if (response.status === 200) {
         const result = response.json.choices[0].message.content;
         
